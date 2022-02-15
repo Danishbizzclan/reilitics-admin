@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="13.849" height="13.849" viewBox="0 0 13.849 13.849">
+  <g id="blog" transform="translate(-4.5 -4.5)">
+    <path id="Path_242" data-name="Path 242" d="M4.5,27h5.77v1.154H4.5Z" transform="translate(0 -10.959)" fill="#fff"/>
+    <path id="Path_243" data-name="Path 243" d="M4.5,20.25h5.77V21.4H4.5Z" transform="translate(0 -7.672)" fill="#fff"/>
+    <path id="Path_244" data-name="Path 244" d="M17.195,10.27H5.654A1.154,1.154,0,0,1,4.5,9.116V5.654A1.154,1.154,0,0,1,5.654,4.5H17.195a1.154,1.154,0,0,1,1.154,1.154V9.116A1.154,1.154,0,0,1,17.195,10.27ZM5.654,5.654V9.116H17.195V5.654Z" fill="#fff"/>
+    <path id="Path_245" data-name="Path 245" d="M24.866,26.02H21.4a1.154,1.154,0,0,1-1.154-1.154V21.4A1.154,1.154,0,0,1,21.4,20.25h3.462A1.154,1.154,0,0,1,26.02,21.4v3.462A1.154,1.154,0,0,1,24.866,26.02ZM21.4,21.4v3.462h3.462V21.4Z" transform="translate(-7.672 -7.672)" fill="#fff"/>
+  </g>
+</svg>
