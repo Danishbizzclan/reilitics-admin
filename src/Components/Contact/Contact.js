@@ -11,7 +11,7 @@ const columns = [
     {
         title: 'First Name',
         key: 'firstName',
-        sorter: true,
+        sorter:(a, b) => a.firstName.localeCompare(b.firstName),
         render: (record) => (
             <>
                 {record.firstName}
@@ -21,7 +21,7 @@ const columns = [
     {
         title: 'Last Name',
         key: 'lastName',
-        sorter: true,
+        sorter:(a, b) => a.lastName.localeCompare(b.lastName),
         render: (record) => (
             <>
                 {record.lastName}
@@ -31,12 +31,12 @@ const columns = [
     {
         title: 'Email',
         dataIndex: 'email',
-        sorter: (a, b) => a.email - b.email,
+        sorter:(a, b) => a.email.localeCompare(b.email),
     },
     {
         title: 'Date',
         key: 'createdAt',
-        sorter: true,
+        sorter:(a, b) => a.createdAt.localeCompare(b.createdAt),
         render: (record) => (
             <>
                 {dateFormat(record.createdAt, "yyyy/mm/dd, h:MM:ss tt")}
@@ -46,12 +46,12 @@ const columns = [
     {
         title: 'Subject',
         dataIndex: 'subject',
-        sorter: (a, b) => a.subject - b.subject,
+        sorter:(a, b) => a.subject.localeCompare(b.subject),
     },
     {
         title: 'Message',
         dataIndex: 'message',
-        sorter: (a, b) => a.message - b.message,
+        // sorter: (a, b) => a.message - b.message,
     }
 ];
 
@@ -177,7 +177,7 @@ class Contact extends React.Component {
                             </div>
                         </div>
                         <div className='row'>
-                            <button className='btn' >All (13) </button>
+                            <button className='btn' >All ({this.state?.data?.length}) </button>
                             <button className='btn'>| </button>
                             <button className='btn' >Spam </button>
                         </div>

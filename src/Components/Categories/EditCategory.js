@@ -8,8 +8,14 @@ import axios from 'axios';
 const columns = [
     {
         title: 'Cateogories',
-        dataIndex: 'name',
-        sorter: (a, b) => a.name - b.name,
+        sorter: false,
+        render: (record) => (
+            <>
+                <span className='font-weight-bold'>
+                    {record.name}
+                </span>
+            </>
+        )
     },
     {
         title: 'Post Counts',

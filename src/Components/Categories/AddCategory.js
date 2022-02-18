@@ -11,8 +11,14 @@ const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const columns = [
     {
         title: 'Cateogories',
-        dataIndex: 'name',
-        sorter: (a, b) => a.name - b.name,
+        sorter: false,
+        render: (record) => (
+            <>
+                <span className='font-weight-bold'>
+                    {record.name}
+                </span>
+            </>
+        )
     },
     {
         title: 'Post Counts',
@@ -74,7 +80,9 @@ class AddCategory extends React.Component {
         slug: '',
         data: [],
         load: false,
-        errorMessage: null
+        errorMessage: null,
+        current: 1,
+        totalPage: 0
     };
 
     onHandleChange = (event) => {
@@ -98,7 +106,7 @@ class AddCategory extends React.Component {
         }
         return true;
     }
-    fetchData = async (value, keyword) => {
+    fetchData = async (page, value, keyword) => {
         try {
             const res = await Promise.all([
                 // axios.get("category"),
@@ -106,7 +114,7 @@ class AddCategory extends React.Component {
                     : value === "draft" ? axios.get("category/status/drafted")
                         : value === "trashed" ? axios.get("category/status/trashed")
                             : value === "search" ? axios.get(`category?keyword=${keyword}`)
-                                : axios.get("category"),
+                                : axios.get(`category?pageNumber=${page}`),
             ]);
             this.setState({
                 data: (value === "published" ? res[0].data.categoriesFound
@@ -114,6 +122,7 @@ class AddCategory extends React.Component {
                         : value === "trashed" ? res[0].data.categoriesFound
                             : value === "search" ? res[0].data.categories
                                 : res[0].data.categories),
+                totalPage: res[0].data.pages,
                 load: true
             })
         } catch {
@@ -124,7 +133,7 @@ class AddCategory extends React.Component {
     };
 
     componentDidMount() {
-        this.fetchData();
+        this.fetchData(1);
     }
 
     SubmitCategory = () => {
@@ -140,12 +149,20 @@ class AddCategory extends React.Component {
                         message.success('Category Added Successfully')
                         window.location = "/categories"
                     }
-                    else{
+                    else {
                         message.error(res.data.message)
                     }
                 })
         }
     }
+    onPageChange = page => {
+        console.log(page);
+        this.setState({
+            current: page,
+        });
+        console.log(this.state.current, 'current page')
+        this.fetchData(this.state.current)
+    };
 
     render() {
         const { xScroll, yScroll, ...state } = this.state;
@@ -178,20 +195,20 @@ class AddCategory extends React.Component {
                                 <div className='px-0'>
                                     <div className='col-md-12 mt-2 px-0'>
                                         <input placeholder="Name" name="name"
-                                         value={state.name} 
-                                         onChange={this.onHandleChange} 
-                                         className="col-12 fillColor px-md-5 px-1 py-2" />
-                                         <span className="text-danger">{this.state.nameError}</span>
+                                            value={state.name}
+                                            onChange={this.onHandleChange}
+                                            className="col-12 fillColor px-md-5 px-1 py-2" />
+                                        <span className="text-danger">{this.state.nameError}</span>
                                         <p className='mt-1'>The name is how it appears on your site.</p>
                                     </div>
 
                                     <div className='col-md-12 mt-2 px-0'>
                                         <input placeholder="Slug"
-                                         name="slug"
-                                          value={state.slug} 
-                                          onChange={this.onHandleChange}
-                                           className="col-12 fillColor px-md-5 px-1 py-2" />
-                                           <span className="text-danger">{this.state.slugError}</span>
+                                            name="slug"
+                                            value={state.slug}
+                                            onChange={this.onHandleChange}
+                                            className="col-12 fillColor px-md-5 px-1 py-2" />
+                                        <span className="text-danger">{this.state.slugError}</span>
                                         <p className='mt-1'>The “slug” is the URL-friendly version of the name. It is
                                             usually all lowercase and contains only letters, numbers,
                                             and hyphens.</p>
@@ -206,13 +223,13 @@ class AddCategory extends React.Component {
                         </div>
                         <div className='col-md-7 mx-auto'>
                             <div className='row'>
-                                <button className='btn' onClick={() => this.fetchData()}>All </button>
+                                <button className='btn' onClick={() => this.fetchData()}>All ({this.state?.data?.length})</button>
                                 <button className='btn'>| </button>
-                                <button className='btn' onClick={() => this.fetchData("published")}>Published </button>
+                                <button className='btn' onClick={() => this.fetchData("", "published")}>Published </button>
                                 <button className='btn'>| </button>
-                                <button className='btn' onClick={() => this.fetchData("draft")}>Draft </button>
+                                <button className='btn' onClick={() => this.fetchData("", "draft")}>Draft </button>
                                 <button className='btn'>| </button>
-                                <button className='btn' onClick={() => this.fetchData("trashed")}>Trashed </button>
+                                <button className='btn' onClick={() => this.fetchData("", "trashed")}>Trashed </button>
                             </div>
                             <div className='row mt-3'>
                                 <div className='mr-auto'>
@@ -229,7 +246,7 @@ class AddCategory extends React.Component {
                                 <div className='ml-auto'>
                                     <div className='displayFlex'>
                                         <input type="text" className='lightBlue border-0 outline' value={state.search} onChange={this.onHandleChange} name='search' placeholder='Search' />
-                                        <Button className="bgBlue mx-1" size={'small'} onClick={() => this.fetchData("search", state.search)}> Search </Button>
+                                        <Button className="bgBlue mx-1" size={'small'} onClick={() => this.fetchData(this.state.current, "search", state.search)}> Search </Button>
                                     </div>
                                 </div>
 
@@ -237,7 +254,7 @@ class AddCategory extends React.Component {
                             <div className='mt-2'>
                                 <Table
                                     {...this.state}
-                                    pagination={{ position: [this.state.top, this.state.bottom] }}
+                                    pagination={{ pageSize: 10, defaultCurrent: this.state.current, onChange: this.onPageChange, total: this.state.totalPage * 10, showSizeChanger: false }}
                                     columns={tableColumns}
                                     dataSource={state.hasData ? this.state.data : null}
                                     loading={{ indicator: <div><Spin indicator={antIcon} /></div>, spinning: !this.state.load }}

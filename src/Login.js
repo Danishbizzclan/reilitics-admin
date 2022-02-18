@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import axios from 'axios'
 import React, { useState } from 'react'
-import { Redirect } from 'react-router-dom'
+// import { Redirect } from 'react-router-dom'
 import { LoadingOutlined } from '@ant-design/icons';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24, display: 'block' }} spin />;
@@ -10,11 +10,13 @@ const Login = () => {
     const initialstate = {
         email: "",
         password: "",
+        emailError: "",
+        passwordError: "",
         login: false,
         loading: false
     }
     const [FormData, setFormData] = useState(initialstate);
-    const { email, password, loading } = FormData;
+    const { email, password, emailError, passwordError, loading } = FormData;
     const onHandleChange = (event) => {
         const { name, value } = event.target;
         setFormData({
@@ -23,76 +25,91 @@ const Login = () => {
         })
     }
 
-    const validation = () => {
-        if (email !== "") {
-            if (email.includes('@') && email.includes('.')) {
-                if (password !== "") {
-                    LoginApi()
-                }
-                else if (password === "") {
-                    setFormData({
-                        ...FormData,
-                        error: "Password is Required"
-                    })
-                    message.error("Password is Required", [4])
-                }
-            }
-            else {
-                setFormData({
-                    ...FormData,
-                    error: "Email is not valid"
-                })
-                message.error("Email is not valid", [4])
-            }
+    function validate() {
+        let passwordError = "";
+        let emailError = "";
+        // eslint-disable-next-line
+        const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (!email || reg.test(email) === false) {
+            emailError = "Invalid Email";
         }
-        else if (email === "") {
+        if (!password) {
+            passwordError = "Password is required";
+        }
+        if (passwordError || emailError) {
             setFormData({
                 ...FormData,
-                error: "Email is Required"
+                passwordError,
+                emailError
             })
-            message.error("Email is Required", [4])
+            return false;
         }
+        else {
+            setFormData({
+                ...FormData,
+                title: "",
+                data: "",
+                metaDescription: "",
+                metaTitle: "",
+                author: "",
+                category: ""
+            })
+        }
+        return true;
     }
 
     const handleKeypress = e => {
         if (e.code === "Enter" || e.code === "NumpadEnter") {
-            validation()
+            // validation()
+            LoginApi();
         }
     };
 
     const LoginApi = () => {
-        setFormData({
-            loading: true
-        })
-        const link = "users/login"
+        if (validate()) {
 
-        axios.post(link,
-            {
-                email: email,
-                password: password
+            setFormData({
+                ...FormData,
+                loading: true
             })
-            .then((res) => {
-                console.log(res)
-                if (res.data.success) {
-                    localStorage.setItem('x-auth-token', res.data.token)
-                    localStorage.setItem('Login', true)
+            const link = "users/login"
+
+            axios.post(link,
+                {
+                    email: email,
+                    password: password
+                })
+                .then((res) => {
+                    console.log(res)
+                    if (res.data.success===true) {
+                        localStorage.setItem('x-auth-token', res.data.token)
+                        localStorage.setItem('Login', true)
+                        setFormData({
+                            ...FormData,
+                            login: true,
+                            token: res.data.data,
+                            loading: false
+                        })
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                    message.error('Email or Password is invalid');
+                    // message.error(res.message)
                     setFormData({
-                        login: true,
-                        token: res.data.data,
+                        ...FormData,
                         loading: false
                     })
-                }
-                else {
-                    message.error(res.data.message)
-                    setFormData({
-                        loading: false
-                    })
-                }
-            })
+                });
+        }
     }
+
     const check = localStorage.getItem('Login')
     return (
-        check === "true" ? <Redirect to="/dashboard" /> :
+        check === "true" ?
+        //  <Redirect to="/dashboard" /> 
+        window.location.replace("/dashboard")
+
+         :
             <React.Fragment>
                 <div className="col-11 mx-auto pt-3 " >
                     <div className=" mx-auto row   marginTop">
@@ -108,19 +125,21 @@ const Login = () => {
                                         name="email" value={email} onChange={onHandleChange}
                                         onKeyPress={handleKeypress}
                                     ></input>
+                                    <span className="text-danger">{emailError}</span>
                                 </div>
                                 <div className="pt-2">
                                     <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"
                                         name="password" value={password} onChange={onHandleChange}
                                         onKeyPress={handleKeypress}
                                     ></input>
+                                    <span className="text-danger">{passwordError}</span>
                                 </div>
                                 <div className="form-group">
                                     {/* <NavLink to="/forget" className="Black">Forget Password?</NavLink> */}
                                 </div>
 
                                 <button type="button" className="btn  col-12 Radius8 White"
-                                    onClick={validation} onKeyPress={handleKeypress}>{loading === true ?
+                                    onClick={LoginApi} onKeyPress={handleKeypress}>{loading === true ?
                                         antIcon : "Login"}</button>
                             </form>
                         </div>

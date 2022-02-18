@@ -14,27 +14,35 @@ const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const columns = [
     {
         title: 'Username',
-        dataIndex: 'username',
-        sorter: (a, b) => a.username - b.username,
+        sorter: false,
+        render: (record) => (
+            <>
+               <span className='font-weight-bold'>
+                   {record.username}
+                   </span> 
+            </>
+        )
     },
     {
         title: 'Name',
-        sorter: true,
+        sorter: false,
         render: (record) => (
             <>
-            {record.firstName+ " "+ record.lastName}
+               <span className=''>
+                   {record.firstName + " " + record.lastName}
+                   </span> 
             </>
         )
     },
     {
         title: 'Email',
         dataIndex: 'email',
-        sorter: (a, b) => a.email - b.email,
+        sorter: (a, b) => a.email.localeCompare(b.email),
     },
     {
         title: 'Role',
         dataIndex: 'role',
-        sorter: (a, b) => a.role - b.role,
+        sorter: (a, b) => a.role.localeCompare(b.role),
     },
     {
         title: 'Date Added',
@@ -61,30 +69,13 @@ const columns = [
     },
 ];
 
-const data = [];
-for (let i = 1; i <= 10; i++) {
-    data.push({
-        key: i,
-        _id: i,
-        name: 'John Brown',
-        email: 'John@gmail.com',
-        age: `${i}2`,
-        role: 'Editor',
-        date: '2021/09/22 at 8:07 am	',
-        address: `New York No. ${i} Lake Park`,
-        description: `My name is John Brown, I am ${i}2 years old, living in New York No. ${i} Lake Park.`,
-    });
-}
-
 // const expandable = { expandedRowRender: record => <p>{record.description}</p> };
 const showHeader = true;
-const pagination = { position: 'bottom' };
 
 class Users extends React.Component {
     state = {
         bordered: false,
         loading: false,
-        pagination,
         size: 'small',
         // expandable,
         title: undefined,
@@ -94,12 +85,14 @@ class Users extends React.Component {
         hasData: true,
         tableLayout: undefined,
         top: 'none',
-        bottom: 'bottomRight',
+        // bottom: 'bottomRight',
         search: '',
         bulkActions: '',
         filter: '',
         load: false,
-        errorMessage: null
+        errorMessage: null,
+        current: 1,
+        totalPage: 0
     };
 
     onHandleChange = (event) => {
@@ -108,12 +101,16 @@ class Users extends React.Component {
             [name]: value
         })
     }
-    fetchData = async (value, keyword) => {
+    fetchData = async (page, value) => {
+        console.log('page:', page)
+        console.log('value:', value)
         try {
             const res = await Promise.all([
-                axios.get("users"),
-                // value === "published" ? axios.get("category/status/published")
-                //     : value === "draft" ? axios.get("category/status/drafted")
+                value === "admin" ? axios.get("users/editors")
+                    : value === "editors" ? axios.get("users/editors")
+                    : value === "free" ? axios.get("package/free-members")
+                    : value === "monthly" ? axios.get("package/monthly-members")
+                        : axios.get(`users?pageNumber=${page}`),
                 //         : value === "trashed" ? axios.get("category/status/trashed")
                 //             : value === "search" ? axios.get(`category?keyword=${keyword}`)
                 //                 : axios.get("category"),
@@ -125,7 +122,12 @@ class Users extends React.Component {
                 //         : value === "trashed" ? res[0].data.categoriesFound
                 //             : value === "search" ? res[0].data.categories
                 //                 : res[0].data.categories),
-                data: res[0].data.users,
+                data: value === "admin" ? res[0].data.editors
+                    : value === "editors" ? res[0].data.editors
+                    : value === "monthly" ? res[0].data.users
+                     :res[0].data.users,
+                totalPage: res[0].data.pages,
+                // current: res[0].data.page,
                 load: true
             })
         } catch {
@@ -134,7 +136,7 @@ class Users extends React.Component {
     };
 
     componentDidMount() {
-        this.fetchData();
+        this.fetchData(1);
     }
 
     handleRowSelectionChange = enable => {
@@ -148,10 +150,17 @@ class Users extends React.Component {
     handleDataChange = hasData => {
         this.setState({ hasData });
     };
-
+    onPageChange = page => {
+        console.log(page);
+        this.setState({
+            current: page,
+        });
+        console.log(this.state.current, 'current page')
+        this.fetchData(this.state.current)
+    };
     render() {
         const { xScroll, yScroll, ...state } = this.state;
-
+        console.log(this.state.totalPage)
         const scroll = {};
         if (yScroll) {
             scroll.y = 240;
@@ -184,19 +193,19 @@ class Users extends React.Component {
                             </div>
                         </div>
                         <div className='row'>
-                            <button className='btn' onClick={() => this.fetchData()}>All </button>
+                            <button className='btn' onClick={() => this.fetchData()}>All ({this.state?.data?.length}) </button>
                             <button className='btn'>| </button>
-                            <button className='btn' onClick={() => this.fetchData("published")}>Admin </button>
+                            <button className='btn' onClick={() => this.fetchData("", "admin")}>Admin </button>
                             <button className='btn'>| </button>
-                            <button className='btn' onClick={() => this.fetchData("draft")}>Editors </button>
+                            <button className='btn' onClick={() => this.fetchData("", "editors")}>Editors </button>
                             <button className='btn'>| </button>
-                            <button className='btn' onClick={() => this.fetchData("trashed")}>Free Members </button>
+                            <button className='btn' onClick={() => this.fetchData("", "free")}>Free Members </button>
                             <button className='btn'>| </button>
-                            <button className='btn' onClick={() => this.fetchData("trashed")}>Monthly Members </button>
+                            <button className='btn' onClick={() => this.fetchData("", "monthly")}>Monthly Members </button>
                             <button className='btn'>| </button>
-                            <button className='btn' onClick={() => this.fetchData("trashed")}>New Members </button>
+                            <button className='btn' onClick={() => this.fetchData("", "new")}>New Members </button>
                             <button className='btn'>| </button>
-                            <button className='btn' onClick={() => this.fetchData("trashed")}>Cancelled Members </button>
+                            <button className='btn' onClick={() => this.fetchData("", "cancelled")}>Cancelled Members </button>
                         </div>
 
                         <div className='displayFlex mt-3'>
@@ -220,10 +229,11 @@ class Users extends React.Component {
                             </div>
                         </div>
                     </div>
+                    {console.log(this.state.data,'data')}
                     <div className='mt-3'>
                         <Table
                             {...this.state}
-                            pagination={{ position: [this.state.top, this.state.bottom] }}
+                            pagination={{ pageSize: 10, defaultCurrent: this.state.current, onChange: this.onPageChange, total: this.state.totalPage * 10, showSizeChanger: false }}
                             columns={tableColumns}
                             dataSource={state.hasData ? this.state.data : null}
                             loading={{ indicator: <div><Spin indicator={antIcon} /></div>, spinning: !this.state.load }}

@@ -12,8 +12,14 @@ const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const columns = [
     {
         title: 'Title',
-        dataIndex: 'title',
-        sorter: (a, b) => a.title - b.title,
+        sorter: false,
+        render: (record) => (
+            <>
+                <span className='font-weight-bold'>
+                    {record.title}
+                </span>
+            </>
+        )
     },
     {
         title: 'View Count',
@@ -78,7 +84,8 @@ class Pages extends React.Component {
         load: false,
         errorMessage: null,
         successMessage: null,
-        totalPages: "",
+        current: 1,
+        totalPage: 0
     };
 
     onHandleChange = (event) => {
@@ -88,17 +95,16 @@ class Pages extends React.Component {
         })
     }
 
-    fetchData = async (value, keyword) => {
+    fetchData = async (page, value, keyword) => {
         try {
             const res = await Promise.all([
                 value === "search" ? axios.get("page?keyword=" + keyword) :
-                    axios.get("page"),
+                    axios.get(`page?pageNumber=${page}`),
             ]);
             console.log(res)
             this.setState({
                 data: value === "search" ? res[0].data.result : res[0].data.result,
-                pagination: res[0].data.page,
-                totalPages: res[0].data.pages,
+                totalPage: res[0].data.pages,
                 load: true
             })
         } catch {
@@ -109,9 +115,16 @@ class Pages extends React.Component {
     };
 
     componentDidMount() {
-        this.fetchData();
+        this.fetchData(1);
     }
-
+    onPageChange = page => {
+        console.log(page);
+        this.setState({
+            current: page,
+        });
+        console.log(this.state.current, 'current page')
+        this.fetchData(this.state.current)
+    };
     render() {
         const { xScroll, yScroll, ...state } = this.state;
 
@@ -140,14 +153,14 @@ class Pages extends React.Component {
                             </div>
                             <div className='displayFlex'>
                                 <input type="text" className='lightBlue border-0 outline' value={state.search} onChange={this.onHandleChange} name='search' placeholder='Search' />
-                                <Button className="bgBlue mx-1" size={'small'} onClick={() => this.fetchData("search", this.state.search)}> Search </Button>
+                                <Button className="bgBlue mx-1" size={'small'} onClick={() => this.fetchData(this.state.current, "search", this.state.search)}> Search </Button>
                             </div>
                         </div>
                     </div>
                     <div className='ml-lg-4 ml-0 mt-3'>
                         <Table
                             {...this.state}
-                            pagination={{ position: [this.state.top, this.state.bottom] }}
+                            pagination={{ pageSize: 10, defaultCurrent: this.state.current, onChange: this.onPageChange, total: this.state.totalPage * 10, showSizeChanger: false }}
                             columns={tableColumns}
                             dataSource={state.hasData ? this.state.data : null}
                             loading={{ indicator: <div><Spin indicator={antIcon} /></div>, spinning: !this.state.load }}

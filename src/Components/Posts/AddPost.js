@@ -1,10 +1,13 @@
 import Sidebar from "../Sidebar";
-import { Button, message, Space } from 'antd';
+import { message, notification } from 'antd';
 import React, { useState, useEffect } from 'react';
 import Editor from './Editor';
 import uploadAdapterPlugin from './UploadAdaptar';
 import axios from "axios";
 import avatar from '../../assests/dummy.png'
+import { LoadingOutlined } from '@ant-design/icons';
+
+const antIcon = <LoadingOutlined style={{ fontSize: 24, display: 'block' }} spin />;
 
 const AddPost = () => {
 
@@ -15,16 +18,20 @@ const AddPost = () => {
         author: "",
         category: "",
         categories: [],
-        titleError : "",
-        dataError : "",
-        metaTitleError : "",
-        descriptionError : "",
-        authorError : "",
-        categoryError : "",
+        titleError: "",
+        dataError: "",
+        metaTitleError: "",
+        descriptionError: "",
+        authorError: "",
+        categoryError: "",
+        imageError:undefined,
+        loading: false,
+        successMessage: null,
+        errorMessage: null
     }
 
     const [DetailData, setDetailData] = useState(initialstate);
-    const { title, metaTitle, metaDescription, categories, category, author, titleError, dataError, metaTitleError, descriptionError, authorError, categoryError } = DetailData;
+    const { title, metaTitle, metaDescription, categories, category, author, titleError, dataError, metaTitleError, descriptionError, authorError, categoryError, loading, successMessage, imageError, errorMessage } = DetailData;
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
 
@@ -43,6 +50,7 @@ const AddPost = () => {
         let descriptionError = "";
         let authorError = "";
         let categoryError = "";
+        let imageError = undefined;
         if (!title) {
             titleError = "Title is required";
         }
@@ -58,10 +66,13 @@ const AddPost = () => {
         if (!author) {
             authorError = "Author is required";
         }
+        if (!selectedFile) {
+            imageError = "Please Upload atleast one image";
+        }
         if (!category) {
             categoryError = "Category is required";
         }
-        if (titleError || dataError || metaTitleError || descriptionError || authorError || categoryError) {
+        if (titleError || dataError || metaTitleError || descriptionError || authorError || categoryError || imageError) {
             setDetailData({
                 ...DetailData,
                 titleError,
@@ -69,19 +80,21 @@ const AddPost = () => {
                 metaTitleError,
                 descriptionError,
                 authorError,
-                categoryError
+                categoryError,
+                imageError
             })
             return false;
         }
-        else{
+        else {
             setDetailData({
                 ...DetailData,
                 title: "",
                 data: "",
                 metaDescription: "",
-                metaTitle:"",
+                metaTitle: "",
                 author: "",
-                category: ""
+                category: "",
+                selectedFile:undefined
             })
         }
         return true;
@@ -95,7 +108,10 @@ const AddPost = () => {
     }
     const SubmitPost = () => {
         if (validate()) {
-
+            setDetailData({
+                ...DetailData,
+                loading: true
+            })
             const link = "article"
             axios.post(link,
                 {
@@ -103,20 +119,42 @@ const AddPost = () => {
                     detail: data,
                     metaTitle: metaTitle,
                     metaDescription: metaDescription,
-                    imageFile: selectedFile,
+                    imageFile: selectedFile.name,
                     category: category,
                     author: author
                 })
                 .then((res) => {
                     console.log(res)
-                    if (res.data.success) {
-                        message.success('Post Added Successfully')
+                    if (res.data.success === true) {
+                        // message.success('Post Added Successfully')
+                        setDetailData({
+                            ...DetailData,
+                            successMessage: "Post Added Successfully",
+                            title: "",
+                            data: "",
+                            metaTitle: "",
+                            metaDescription: "",
+                            category: "",
+                            author: "",
+                            loading: false
+                        })
+                        setData("")
+                        setSelectedFile(undefined)
                         window.location = "/post/add"
                     }
-                    else{
-                        message.error(res.data.message)
-                    }
+                }).catch(function (error) {
+                    console.log(error);
+                    setDetailData({
+                        ...DetailData,
+                        errorMessage: "Something is missing",
+                        loading: false
+                    })
                 });
+                setDetailData({
+                    ...DetailData,
+                    successMessage: null,
+                    errorMessage: null,
+                })
         }
     }
     // create a preview as a side effect, whenever selected file is changed
@@ -142,6 +180,24 @@ const AddPost = () => {
         // I've kept this example simple by using the first image instead of multiple
         setSelectedFile(e.target.files[0])
     }
+    const fetchCategory = async (value, keyword) => {
+        try {
+            const res = await Promise.all([axios.get("category"),
+            ]);
+            setDetailData({
+                ...DetailData,
+                categories: res[0].data.categories
+            })
+        } catch {
+            // throw Error("Promise");
+            message.error("Something went wrong")
+        }
+    };
+    useEffect(() => {
+        fetchCategory();
+        // eslint-disable-next-line
+    }, [])
+
     console.log(selectedFile)
     console.log(category)
     return (
@@ -158,6 +214,7 @@ const AddPost = () => {
                             <br />
                             <label for="files" className="btn mt-3 ml-2 col-6" style={{ backgroundColor: '#F2F8FF', border: '1px solid #0F74AF', color: 'black' }}>Upload Photo</label>
                             <input type='file' id="files" onChange={onSelectFile} style={{ color: 'white', visibility: 'hidden' }} />
+                            <span className="text-danger">{imageError}</span>
                         </div>
                     </div>
                 </div>
@@ -165,12 +222,12 @@ const AddPost = () => {
                     <div className=' ml-2'>
                         <form >
                             <div className='col-md-6 col-12 my-2'>
-                                <input required placeholder="Title of the Post"
-                                 name="title"
-                                 value={title} 
-                                 onChange={onHandleChange} 
-                                 className="col-12 fillColor px-md-5 px-1 py-2" />
-                                 <span className="text-danger">{titleError}</span>
+                                <input placeholder="Title of the Post"
+                                    name="title"
+                                    value={title}
+                                    onChange={onHandleChange}
+                                    className="col-12 fillColor px-md-5 px-1 py-2" />
+                                <span className="text-danger">{titleError}</span>
                             </div>
                             <div className="col-md-6 col-12 my-2">
                                 <Editor
@@ -183,34 +240,34 @@ const AddPost = () => {
                                         editor.ui.view.editable.element.style.height = "200px"
                                         uploadAdapterPlugin(editor)
                                     }} />
-                                    <span className="text-danger">{dataError}</span>
+                                <span className="text-danger">{dataError}</span>
                             </div>
 
                             <div className='col-md-6 col-12 my-2'>
-                                <input required placeholder="Author"
-                                 name="author"
-                                  value={author}
-                                   onChange={onHandleChange}
+                                <input placeholder="Author"
+                                    name="author"
+                                    value={author}
+                                    onChange={onHandleChange}
                                     className="col-12 fillColor px-md-5 px-1 py-2" />
-                                    <span className="text-danger">{authorError}</span>
+                                <span className="text-danger">{authorError}</span>
                             </div>
 
                             <div className='col-md-6 col-12 my-2'>
-                                <input required placeholder="Meta Title"
-                                 name="metaTitle" 
-                                 value={metaTitle} 
-                                 onChange={onHandleChange} 
-                                 className="col-12 fillColor px-md-5 px-1 py-2" />
-                                 <span className="text-danger">{metaTitleError}</span>
+                                <input placeholder="Meta Title"
+                                    name="metaTitle"
+                                    value={metaTitle}
+                                    onChange={onHandleChange}
+                                    className="col-12 fillColor px-md-5 px-1 py-2" />
+                                <span className="text-danger">{metaTitleError}</span>
                             </div>
 
                             <div className='col-md-6 col-12 my-2'>
-                                <input required placeholder="Meta Description ()"
-                                 name="metaDescription"
-                                  value={metaDescription} 
-                                  onChange={onHandleChange}
-                                   className="col-12 fillColor px-md-5 px-1 py-2" />
-                                   <span className="text-danger">{descriptionError}</span>
+                                <input placeholder="Meta Description ()"
+                                    name="metaDescription"
+                                    value={metaDescription}
+                                    onChange={onHandleChange}
+                                    className="col-12 fillColor px-md-5 px-1 py-2" />
+                                <span className="text-danger">{descriptionError}</span>
                             </div>
                             <div className='col-md-6 col-12 my-2'>
                                 <select name="category" className="col-12 fillColor px-md-5 px-1 py-2" onChange={onHandleChange}>
@@ -224,19 +281,29 @@ const AddPost = () => {
                                 <span className="text-danger">{categoryError}</span>
                             </div>
                             <div className='col-md-6 col-12'>
-                                <Space size="middle" className="float-right">
-                                    <Button size="middle" type="primary" htmlType="submit" className="float-right Radius8">
-                                        Save draft
-                                    </Button>
-                                    <Button size="middle" type="primary" onClick={SubmitPost} htmlType="button" className="float-right Radius8">
-                                        Pubish
-                                    </Button>
-                                </Space>
+                                <button className="float-right Radius8 White px-3 py-2 border-0" type="button" onClick={SubmitPost}>
+                                    {loading === true ?
+                                        antIcon : "Pubish"}
+                                </button >
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+            {successMessage !== null &&
+                notification['success']({
+                    message: 'Success',
+                    description: successMessage,
+                    placement: 'bottomLeft'
+                })
+            }
+            {errorMessage !== null &&
+                notification['error']({
+                    message: 'Error',
+                    description: errorMessage,
+                    placement: 'bottomLeft'
+                })
+            }
         </>
     )
 }

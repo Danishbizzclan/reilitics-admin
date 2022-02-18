@@ -14,13 +14,19 @@ const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const columns = [
     {
         title: 'Title',
-        dataIndex: 'title',
-        sorter: (a, b) => a.title - b.title,
+        sorter: false,
+        render: (record) => (
+            <>
+               <span className='font-weight-bold'>
+                   {record.title}
+                   </span> 
+            </>
+        )
     },
     {
         title: 'Author',
         dataIndex: 'author',
-        sorter: (a, b) => a.author - b.author,
+        sorter: (a, b) => a.author.localeCompare(b.author),
     },
     {
         title: 'Date Added',
@@ -93,7 +99,9 @@ class Posts extends React.Component {
         bulkActions: '',
         filter: '',
         data: [],
-        errorMessage: null
+        errorMessage: null,
+        current: 1,
+        totalPage: 0
     };
 
     onHandleChange = (event) => {
@@ -103,14 +111,18 @@ class Posts extends React.Component {
         })
     }
 
-    fetchData = async (value, keyword) => {
+   fetchData = async (page, value, keyword) => {
+        console.log(page)
         try {
             const res = await Promise.all([
-                value === "search" && axios.get(`article?keyword=${keyword}`)
+                value === "search"? axios.get(`article?keyword=${keyword}`):
+                axios.get(`article?pageNumber=${page}`)
             ]);
             this.setState({
                 load: true,
-                data: (value === "search" && res[0].data.articles),
+                data: (value === "search"? res[0].data.articles:
+                res[0].data.articles),
+                totalPage: res[0].data.pages,
             })
         } catch {
             // throw Error("Promise");
@@ -120,7 +132,7 @@ class Posts extends React.Component {
     };
 
     componentDidMount() {
-        this.fetchData();
+        this.fetchData(1);
     }
 
     handleRowSelectionChange = enable => {
@@ -134,7 +146,14 @@ class Posts extends React.Component {
     handleDataChange = hasData => {
         this.setState({ hasData });
     };
-
+    onPageChange = page => {
+        console.log(page);
+        this.setState({
+            current: page,
+        });
+        console.log(this.state.current, 'current page')
+        this.fetchData(this.state.current)
+    };
     render() {
         const { xScroll, yScroll, ...state } = this.state;
 
@@ -166,10 +185,10 @@ class Posts extends React.Component {
                             </div>
                             <div className='displayFlex'>
                                 <input type="text" className='lightBlue border-0 outline' value={state.search} onChange={this.onHandleChange} name='search' placeholder='Search' />
-                                <Button className="bgBlue mx-1" size={'small'} onClick={() => this.fetchData("search", state.search)}> Search </Button>
+                                <Button className="bgBlue mx-1" size={'small'} onClick={() => this.fetchData(this.state.current,"search", state.search)}> Search </Button>
                             </div>
                         </div>
-                        <table className="table table-responsive-md mt-3">
+                        {/* <table className="table table-responsive-md mt-3">
                             <tbody>
                                 <tr className=''>
                                     <td className=' textCenter font_14'>All</td>
@@ -182,7 +201,7 @@ class Posts extends React.Component {
                                     <td className='borderLeft textCenter font_14'>Cancelled Members</td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table> */}
                         <div className='displayFlex mt-3'>
                             <div className='displayFlex'>
                                 <select value={state.bulkActions} onChange={this.onHandleChange} name='bulkActions' className='blue outline Radius2'>
@@ -207,7 +226,7 @@ class Posts extends React.Component {
                     <div className='mt-3'>
                         <Table
                             {...this.state}
-                            pagination={{ position: [this.state.top, this.state.bottom] }}
+                            pagination={{ pageSize: 10, defaultCurrent: this.state.current, onChange: this.onPageChange, total: this.state.totalPage * 10, showSizeChanger: false }}
                             columns={tableColumns}
                             dataSource={state.hasData ? this.state.data : null}
                             loading={{ indicator: <div><Spin indicator={antIcon} /></div>, spinning: !this.state.load }}

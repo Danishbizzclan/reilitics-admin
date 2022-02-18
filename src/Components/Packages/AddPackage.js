@@ -52,7 +52,6 @@ class AddPackage extends React.Component {
         let nameError = "";
         let packageTypeError = "";
         let priceError = "";
-        let optionError = "";
         if (!this.state.name) {
             nameError = "Name is required";
         }

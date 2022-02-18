@@ -14,18 +14,24 @@ const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const columns = [
     {
         title: 'Name',
-        dataIndex: 'name',
-        sorter: (a, b) => a.name - b.name,
+        sorter: false,
+        render: (record) => (
+            <>
+                <span className='font-weight-bold'>
+                    {record.name}
+                </span>
+            </>
+        )
     },
     {
         title: 'Type',
         dataIndex: 'packageType',
-        sorter: (a, b) => a.packageType - b.packageType,
+        // sorter: (a, b) => a.packageType - b.packageType,
     },
     {
         title: 'Price',
         dataIndex: 'price',
-        sorter: (a, b) => a.price - b.price,
+        // sorter: (a, b) => a.price - b.price,
     },
     {
         title: 'Date Added',
