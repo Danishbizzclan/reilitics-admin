@@ -152,7 +152,7 @@ class Posts extends React.Component {
             current: page,
         });
         console.log(this.state.current, 'current page')
-        this.fetchData(this.state.current)
+        this.fetchData(page)
     };
     render() {
         const { xScroll, yScroll, ...state } = this.state;

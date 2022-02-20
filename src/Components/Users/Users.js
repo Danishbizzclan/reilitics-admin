@@ -130,6 +130,7 @@ class Users extends React.Component {
                 // current: res[0].data.page,
                 load: true
             })
+            // this.onPageChange(page);
         } catch {
             this.setState({ errorMessage: "Something went Wrong" })
         }
@@ -155,8 +156,11 @@ class Users extends React.Component {
         this.setState({
             current: page,
         });
-        console.log(this.state.current, 'current page')
-        this.fetchData(this.state.current)
+        console.log(page, 'current page')
+        this.fetchData(page)
+        // this.setState({
+        //     current: page,
+        // });
     };
     render() {
         const { xScroll, yScroll, ...state } = this.state;
@@ -233,7 +237,7 @@ class Users extends React.Component {
                     <div className='mt-3'>
                         <Table
                             {...this.state}
-                            pagination={{ pageSize: 10, defaultCurrent: this.state.current, onChange: this.onPageChange, total: this.state.totalPage * 10, showSizeChanger: false }}
+                            pagination={{ pageSize: 10, current: this.state.current, onChange: this.onPageChange, total: this.state.totalPage * 10, showSizeChanger: false }}
                             columns={tableColumns}
                             dataSource={state.hasData ? this.state.data : null}
                             loading={{ indicator: <div><Spin indicator={antIcon} /></div>, spinning: !this.state.load }}

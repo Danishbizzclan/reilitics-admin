@@ -78,6 +78,8 @@ class EditCategory extends React.Component {
         name: '',
         slug: '',
         data: [],
+        current: 1,
+        totalPage:0,
         id: '',
         load: false
     };
@@ -89,34 +91,42 @@ class EditCategory extends React.Component {
         })
     }
 
-    fetchData = async (value) => {
+    fetchData = async (page, value) => {
         try {
             const res = await Promise.all([
                 axios.get("category/" + this.props.match.params._id),
                 value === "published" ? axios.get("category/status/published")
                     : value === "draft" ? axios.get("category/status/drafted")
                         : value === "trashed" ? axios.get("category/status/trashed")
-                            : axios.get("category"),
+                            : axios.get(`category?pageNumber=${page}`),
             ]);
             this.setState({
                 data: (value === "published" ? res[1].data.categoriesFound
                     : value === "draft" ? res[1].data.categoriesFound
                         : value === "trashed" ? res[1].data.categoriesFound
                             : res[1].data.categories),
+                totalPage: res[0].data.pages,
                 name: res[0].data.categoryFound.name,
                 slug: res[0].data.categoryFound.slug,
                 id: res[0].data.categoryFound._id,
                 load: true
             })
         } catch {
-            throw Error("Promise failed");
+            console.log('error');
         }
     };
 
     componentDidMount() {
-        this.fetchData();
+        this.fetchData(1);
     }
-
+    onPageChange = page => {
+        console.log(page);
+        this.setState({
+            current: page,
+        });
+        console.log(this.state.current, 'current page')
+        this.fetchData(page)
+    };
     EditCategory = (id) => {
         const link = "category/" + id
         axios.put(link,
@@ -216,7 +226,7 @@ class EditCategory extends React.Component {
                             <div className='mt-2'>
                                 <Table
                                     {...this.state}
-                                    pagination={{ position: [this.state.top, this.state.bottom] }}
+                                    pagination={{ pageSize: 10, defaultCurrent: this.state.current, onChange: this.onPageChange, total: this.state.totalPage * 10, showSizeChanger: false }}
                                     columns={tableColumns}
                                     dataSource={state.hasData ? this.state.data : null}
                                     loading={{ indicator: <div><Spin /></div>, spinning: !this.state.load }}
