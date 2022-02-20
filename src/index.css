@@ -114,9 +114,9 @@ div.content {
   }
 }
 
-.btn:focus {
+/* .btn:focus {
   background: #022945 !important;
-}
+} */
 
 .displayFlex {
   display: flex;
