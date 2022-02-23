@@ -42,10 +42,8 @@ class AddPackage extends React.Component {
 
     removeFreeService(e) {
         let myArr = this.state.options.filter(function (item) {
-            console.log('item', item)
             return item.serviceid !== e;
         });
-        console.log('removed', myArr)
         this.setState({ options: myArr })
     }
     validate() {
@@ -79,7 +77,6 @@ class AddPackage extends React.Component {
                     options: result
                 })
                 .then((res) => {
-                    console.log(res)
                     if (res.data.success === true) {
                         message.success('Package Added Successfully')
                         window.location = "/packages"
@@ -92,7 +89,6 @@ class AddPackage extends React.Component {
     }
 
     render() {
-        console.log(this.state.free)
         const RenderFree = this.state.options.map((servicemap) => {
             return (
                 <>

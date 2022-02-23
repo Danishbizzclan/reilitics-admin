@@ -124,7 +124,6 @@ const AddPost = () => {
                     author: author
                 })
                 .then((res) => {
-                    console.log(res)
                     if (res.data.success === true) {
                         // message.success('Post Added Successfully')
                         setDetailData({
@@ -198,8 +197,6 @@ const AddPost = () => {
         // eslint-disable-next-line
     }, [])
 
-    console.log(selectedFile)
-    console.log(category)
     return (
         <>
             <Sidebar />
@@ -212,7 +209,7 @@ const AddPost = () => {
                                 <img src={avatar} alt='nothing' width="200px" className=' mx-3' /> :
                                 <img src={preview} alt='' width="200px" className=' mx-3' />}
                             <br />
-                            <label for="files" className="btn mt-3 ml-2 col-6" style={{ backgroundColor: '#F2F8FF', border: '1px solid #0F74AF', color: 'black' }}>Upload Photo</label>
+                            <label htmlFor="files" className="btn mt-3 ml-2 col-6" style={{ backgroundColor: '#F2F8FF', border: '1px solid #0F74AF', color: 'black' }}>Upload Photo</label>
                             <input type='file' id="files" onChange={onSelectFile} style={{ color: 'white', visibility: 'hidden' }} />
                             <span className="text-danger">{imageError}</span>
                         </div>

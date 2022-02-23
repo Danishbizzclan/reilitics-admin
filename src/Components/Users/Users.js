@@ -1,6 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Table, Button, Space, Popconfirm, Spin, notification } from 'antd';
+import { Table, Button, Space, Popconfirm, Spin, notification, message } from 'antd';
 import Sidebar from '../Sidebar';
 import { ReactComponent as DeleteIcon } from '../../assests/delete.svg';
 import { ReactComponent as ViewIcon } from '../../assests/eyefill.svg';
@@ -17,9 +17,9 @@ const columns = [
         sorter: false,
         render: (record) => (
             <>
-               <span className='font-weight-bold'>
-                   {record.username}
-                   </span> 
+                <span className='font-weight-bold'>
+                    {record.username}
+                </span>
             </>
         )
     },
@@ -28,9 +28,9 @@ const columns = [
         sorter: false,
         render: (record) => (
             <>
-               <span className=''>
-                   {record.firstName + " " + record.lastName}
-                   </span> 
+                <span className=''>
+                    {record.firstName + " " + record.lastName}
+                </span>
             </>
         )
     },
@@ -60,7 +60,7 @@ const columns = [
             <>
                 <Space size="middle">
                     <NavLink to={"/user/edit/" + record._id}> <Button className=' bgBlue' size={'small'}> Edit </Button> </NavLink>
-                    <Popconfirm title="Sure to delete?" onConfirm={() => (record.key)}>
+                    <Popconfirm title="Sure to delete?" onConfirm={() => (DeleteUser(record._id))}>
                         <Button className='' size={'small'} type='primary' danger> <DeleteIcon /> </Button> </Popconfirm>
                     <NavLink to={"/user/detail/" + record._id}> <Button className=' bgGreen' size={'small'} > <ViewIcon /> </Button></NavLink>
                 </Space>
@@ -68,6 +68,19 @@ const columns = [
         ),
     },
 ];
+
+const DeleteUser = (id) => {
+    const link = "users/" + id
+    axios.delete(link)
+        .then((res) => {
+            if (res.data.success) {
+                message.success('User Deleted Successfully')
+                window.location = "/users"
+            }
+        }).catch(function (error) {
+            console.log(error)
+        });
+}
 
 // const expandable = { expandedRowRender: record => <p>{record.description}</p> };
 const showHeader = true;
@@ -102,20 +115,17 @@ class Users extends React.Component {
         })
     }
     fetchData = async (page, value) => {
-        console.log('page:', page)
-        console.log('value:', value)
         try {
             const res = await Promise.all([
                 value === "admin" ? axios.get("users/editors")
                     : value === "editors" ? axios.get("users/editors")
-                    : value === "free" ? axios.get("package/free-members")
-                    : value === "monthly" ? axios.get("package/monthly-members")
-                        : axios.get(`users?pageNumber=${page}`),
+                        : value === "free" ? axios.get("package/free-members")
+                            : value === "monthly" ? axios.get("package/monthly-members")
+                                : axios.get(`users?pageNumber=${page}`),
                 //         : value === "trashed" ? axios.get("category/status/trashed")
                 //             : value === "search" ? axios.get(`category?keyword=${keyword}`)
                 //                 : axios.get("category"),
             ]);
-            console.log(res)
             this.setState({
                 // data: (value === "published" ? res[0].data.categoriesFound
                 //     : value === "draft" ? res[0].data.categoriesFound
@@ -124,16 +134,24 @@ class Users extends React.Component {
                 //                 : res[0].data.categories),
                 data: value === "admin" ? res[0].data.editors
                     : value === "editors" ? res[0].data.editors
-                    : value === "monthly" ? res[0].data.users
-                     :res[0].data.users,
+                        : value === "monthly" ? res[0].data.users
+                            : res[0].data.users,
                 totalPage: res[0].data.pages,
                 // current: res[0].data.page,
                 load: true
             })
             // this.onPageChange(page);
-        } catch {
-            this.setState({ errorMessage: "Something went Wrong" })
-        }
+        } catch (error) {
+            console.log(error.response.data)
+            if (error.response.data.code === 401) {
+                this.setState({errorMessage:"Session Expired! Login Again"})
+                localStorage.clear()
+                window.location="/login"
+            }
+            else if (error.response.data.code !== 401){
+                this.setState({errorMessage:error.response.data.message})
+            }
+        };
     };
 
     componentDidMount() {
@@ -152,11 +170,9 @@ class Users extends React.Component {
         this.setState({ hasData });
     };
     onPageChange = page => {
-        console.log(page);
         this.setState({
             current: page,
         });
-        console.log(page, 'current page')
         this.fetchData(page)
         // this.setState({
         //     current: page,
@@ -164,7 +180,6 @@ class Users extends React.Component {
     };
     render() {
         const { xScroll, yScroll, ...state } = this.state;
-        console.log(this.state.totalPage)
         const scroll = {};
         if (yScroll) {
             scroll.y = 240;
@@ -233,7 +248,6 @@ class Users extends React.Component {
                             </div>
                         </div>
                     </div>
-                    {console.log(this.state.data,'data')}
                     <div className='mt-3'>
                         <Table
                             {...this.state}

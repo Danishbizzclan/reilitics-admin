@@ -24,6 +24,7 @@ import AddPackage from "./Components/Packages/AddPackage";
 import Packages from "./Components/Packages/Packages";
 import PackageDetail from "./Components/Packages/PackageDetail";
 import EditPackage from "./Components/Packages/EditPackage";
+import PostDetail from "./Components/Posts/PostDetail";
 const App = () => {
 
   return (
@@ -39,6 +40,7 @@ const App = () => {
           <Route exact path="/posts" component={Posts} />
           <Route exact path="/post/add" component={AddPost} />
           <Route exact path="/post/edit/:_id" component={EditPost} />
+          <Route exact path="/post/detail/:_id" component={PostDetail} />
           <Route exact path="/contact" component={Contact} />
           <Route exact path="/pages" component={Pages} />
           <Route exact path="/pages/add" component={AddPage} />

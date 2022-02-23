@@ -107,7 +107,6 @@ class Packages extends React.Component {
             const res = await Promise.all([
                 axios.get("package"),
             ]);
-            console.log(res)
             this.setState({
                 data: res[0].data.packages,
                 load: true

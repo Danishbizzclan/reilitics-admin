@@ -101,7 +101,6 @@ class Pages extends React.Component {
                 value === "search" ? axios.get("page?keyword=" + keyword) :
                     axios.get(`page?pageNumber=${page}`),
             ]);
-            console.log(res)
             this.setState({
                 data: value === "search" ? res[0].data.result : res[0].data.result,
                 totalPage: res[0].data.pages,
@@ -118,11 +117,9 @@ class Pages extends React.Component {
         this.fetchData(1);
     }
     onPageChange = page => {
-        console.log(page);
         this.setState({
             current: page,
         });
-        console.log(this.state.current, 'current page')
         this.fetchData(page)
     };
     render() {

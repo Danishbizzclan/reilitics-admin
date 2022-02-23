@@ -22,7 +22,6 @@ class PackageDetail extends React.Component {
         const link = "package/" + this.props.match.params._id
         axios.get(link)
             .then(response => {
-                console.log(response)
                 this.setState({
                     name: response.data.packageFound.name,
                     price: response.data.packageFound.price,
@@ -36,11 +35,9 @@ class PackageDetail extends React.Component {
             });
     }
     render() {
-        console.log(this.state.options)
         const RenderFree = this.state.options.map((servicemap) => {
             return (
                 <>
-                {console.log(servicemap)}
                     <table >
                         <tr>
                             <td><OkIcon /></td>

@@ -48,18 +48,18 @@ const Dashboard = () => {
                                         <h5 className="card-title text-center"> <NewUsersIcon /> </h5>
                                         <h6 className="card-subtitle mt-2 text-center">25 Members</h6>
                                     </div>
-                                    <h6 className="card-subtitle bgBlue text-center p-1 m-0">New Members</h6>
+                                    <h6 className="card-subtitle bgBlue text-center p-1 m-0 font_16">New Members</h6>
                                 </div>
                                 <div className="card mx-2 mt-1" style={{ width: "200px", border: '1px solid #48A7DF', borderRadius: '4px' }}>
                                     <div className="card-body">
                                         <h5 className="card-title text-center"> <CancelledIcon /> </h5>
                                         <h6 className="card-subtitle mb-2 text-center">25 Members</h6>
                                     </div>
-                                    <h6 className="card-subtitle text-center p-1 m-0" style={{ backgroundColor: '#48A7DF', color: 'white' }}>Cancelled Members</h6>
+                                    <h6 className="card-subtitle text-center p-1 m-0 font_16" style={{ backgroundColor: '#48A7DF', color: 'white' }}>Cancelled Members</h6>
                                 </div>
                             </div>
                         </div>
-                        <div className=' Light mx-2 mt-2'>
+                        <div className=' Light mx-0 mt-2'>
                             <h6 className='ml-3 mt-3'>Members By Packages</h6>
                             <div className='row  mx-2 my-2'>
                                 <div className="card mx-2 mt-1" style={{ width: "200px", border: '1px solid #0F74AF', borderRadius: '4px' }}>
@@ -67,21 +67,21 @@ const Dashboard = () => {
                                         <h5 className="card-title text-center"> <NewUsersIcon /> </h5>
                                         <h6 className="card-subtitle mt-2 text-center">25 Members</h6>
                                     </div>
-                                    <h6 className="card-subtitle bgBlue text-center p-1 m-0">Paid Monthly</h6>
+                                    <h6 className="card-subtitle bgBlue text-center p-1 m-0 font_16">Paid Monthly</h6>
                                 </div>
                                 <div className="card mx-2 mt-1" style={{ width: "200px", border: '1px solid #FFB100', borderRadius: '4px' }}>
                                     <div className="card-body">
                                         <h5 className="card-title text-center"> <FreeUsersIcon /> </h5>
                                         <h6 className="card-subtitle mt-2 text-center">25 Members</h6>
                                     </div>
-                                    <h6 className="card-subtitle text-center p-1 m-0" style={{ backgroundColor: '#FFB100', color: 'white' }}>Free</h6>
+                                    <h6 className="card-subtitle text-center p-1 m-0 font_16" style={{ backgroundColor: '#FFB100', color: 'white' }}>Free</h6>
                                 </div>
                                 <div className="card mx-2 mt-1" style={{ width: "200px", border: '1px solid #12BF7D', borderRadius: '4px' }}>
                                     <div className="card-body">
                                         <h5 className="card-title text-center"> <HoursIcon /> </h5>
                                         <h6 className="card-subtitle mt-2 text-center">25 Members</h6>
                                     </div>
-                                    <h6 className="card-subtitle text-center p-1 m-0" style={{ backgroundColor: '#12BF7D', color: 'white' }}>24 Hours</h6>
+                                    <h6 className="card-subtitle text-center p-1 m-0 font_16" style={{ backgroundColor: '#12BF7D', color: 'white' }}>24 Hours</h6>
                                 </div>
                             </div>
                         </div>

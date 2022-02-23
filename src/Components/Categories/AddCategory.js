@@ -156,11 +156,9 @@ class AddCategory extends React.Component {
         }
     }
     onPageChange = page => {
-        console.log(page);
         this.setState({
             current: page,
         });
-        console.log(this.state.current, 'current page')
         this.fetchData(page)
     };
 

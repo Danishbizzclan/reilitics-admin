@@ -55,7 +55,6 @@ const EditPage = () => {
     const fetchData = async (value, keyword) => {
         try {
             const res = await Promise.all([axios.get("page/"+_id)]);
-            console.log(res)
             setDetailData({
                 ...DetailData,
                 metaTitle: res[0].data.pageById.title,

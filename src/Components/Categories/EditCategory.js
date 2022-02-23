@@ -42,7 +42,6 @@ const DeleteCategory = (id) => {
     const link = "category/" + id
     axios.delete(link)
         .then((res) => {
-            console.log(res)
             if (res.data.success) {
                 message.success('Category Deleted Successfully')
                 window.location = "/categories"
@@ -120,11 +119,9 @@ class EditCategory extends React.Component {
         this.fetchData(1);
     }
     onPageChange = page => {
-        console.log(page);
         this.setState({
             current: page,
         });
-        console.log(this.state.current, 'current page')
         this.fetchData(page)
     };
     EditCategory = (id) => {
@@ -135,7 +132,6 @@ class EditCategory extends React.Component {
                 slug: this.state.slug
             })
             .then((res) => {
-                console.log(res)
                 if (res.data.success) {
                     message.success('Category Updated Successfully')
                     window.location = "/categories"

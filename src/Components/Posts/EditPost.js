@@ -1,5 +1,5 @@
 import Sidebar from "../Sidebar";
-import { Button, message, Space } from 'antd';
+import { message } from 'antd';
 import React, { useState, useEffect } from 'react';
 import Editor from './Editor';
 import uploadAdapterPlugin from './UploadAdaptar';
@@ -53,12 +53,11 @@ const EditPost = () => {
                 detail: data,
                 metaTitle: metaTitle,
                 metaDescription: metaDescription,
-                imageFile: selectedFile,
+                imageFile: selectedFile.name,
                 category: category,
                 author: author
             })
             .then((res) => {
-                console.log(res)
                 if (res.data.success) {
                     message.success('Article Updated Successfully')
                     window.location = "/post/edit/"+_id
@@ -90,7 +89,6 @@ const EditPost = () => {
         // I've kept this example simple by using the first image instead of multiple
         setSelectedFile(e.target.files[0])
     }
-    console.log(selectedFile)
     useEffect(() => {
         fetchData();
         // eslint-disable-next-line
@@ -98,13 +96,21 @@ const EditPost = () => {
 
     const fetchData = async (value, keyword) => {
         try {
-            const res = await Promise.all([axios.get("category")]);
-            console.log(res)
+            const res = await Promise.all([
+                axios.get(`article/${_id}`),
+                axios.get(`category`),
+            ]);
             setDetailData({
                 ...DetailData,
-                categories: res[0].data.categories,
+                categories: res[1].data.categories,
+                title: res[0].data.article.title,
+                author:res[0].data.article.author,
+                // metaDescription: res[0].data.article.detail,
+                category:res[0].data.article.category,
+                selectedFile: res[0].data.article.image,
                 load: true
             })
+            setData(res[0].data.article.detail)
         } catch {
             setDetailData({
                 ...DetailData,
@@ -112,7 +118,6 @@ const EditPost = () => {
             })
         }
     };
-    console.log(category)
     return (
         <>
             <Sidebar />
@@ -125,7 +130,7 @@ const EditPost = () => {
                                 <img src={avatar} alt='nothing' width="200px" className=' mx-3' /> :
                                 <img src={preview} alt='' width="200px" className=' mx-3' />}
                             <br />
-                            <label for="files" className="btn mt-3 ml-2 col-6" style={{ backgroundColor: '#F2F8FF', border: '1px solid #0F74AF', color: 'black' }}>Upload Photo</label>
+                            <label htmlFor="files" className="btn mt-3 ml-2 col-6" style={{ backgroundColor: '#F2F8FF', border: '1px solid #0F74AF', color: 'black' }}>Upload Photo</label>
                             <input type='file' id="files" onChange={onSelectFile} style={{ color: 'white', visibility: 'hidden' }} />
                         </div>
                     </div>
@@ -142,6 +147,7 @@ const EditPost = () => {
                                     onChange={(data) => {
                                         setData(data);
                                     }}
+                                    value={data}
                                     editorLoaded={editorLoaded}
                                     onInit={(editor) => {
                                         editor.ui.view.editable.element.style.height = "200px"
@@ -162,7 +168,7 @@ const EditPost = () => {
                             </div>
                             <div className='col-md-6 col-12 my-2'>
                                 <select name="category" className="col-12 fillColor px-md-5 px-1 py-2" onChange={onHandleChange}>
-                                <option value="">Select Category</option> 
+                                <option value={category?? ""}>{ category===""? "Select Category": category}</option> 
                                     {categories.map(value=>{
                                         return(
                                           <option value={value._id}>{value.name}</option>  
@@ -171,14 +177,15 @@ const EditPost = () => {
                                 </select>
                             </div>
                             <div className='col-md-6 col-12'>
-                                <Space size="middle" className="float-right">
-                                    <Button size="middle" type="primary" htmlType="submit" className="float-right Radius8">
+                                <div className="">
+                                     {/* <button type="button" className="btn border-0 p-2 mx-2 White float-right Radius8">
                                         Save draft
-                                    </Button>
-                                    <Button size="middle" type="primary" onClick={SubmitPost} htmlType="button" className="float-right Radius8">
+                                    </button> */}
+                                    <button onClick={SubmitPost} type="button" className="btn border-0 p-2 White float-right Radius8">
                                         Pubish
-                                    </Button>
-                                </Space>
+                                    </button>
+                                </div>
+                                   
                             </div>
                         </form>
                     </div>

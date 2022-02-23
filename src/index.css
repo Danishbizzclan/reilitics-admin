@@ -35,6 +35,9 @@ h6 {
 .font_15 {
   font-size: 15px;
 }
+.font_16{
+  font-size: 1rem;
+}
 
 .font_14 {
   font-size: 14px;
@@ -94,7 +97,7 @@ div.content {
   }
 
   .sidebar a {
-    float: left;
+    float: left;  
   }
 
   div.content {

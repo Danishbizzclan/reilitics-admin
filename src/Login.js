@@ -1,9 +1,9 @@
 import { message } from 'antd'
 import axios from 'axios'
 import React, { useState } from 'react'
-// import { Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { LoadingOutlined } from '@ant-design/icons';
-
+import {updateAuthorizationToken} from "../src/index";
 const antIcon = <LoadingOutlined style={{ fontSize: 24, display: 'block' }} spin />;
 
 const Login = () => {
@@ -80,9 +80,10 @@ const Login = () => {
                     password: password
                 })
                 .then((res) => {
-                    console.log(res)
                     if (res.data.success===true) {
-                        localStorage.setItem('x-auth-token', res.data.token)
+                        localStorage.clear();
+                        localStorage.setItem('x-auth-token', res.data.token);
+                        updateAuthorizationToken(res.data.token);
                         localStorage.setItem('Login', true)
                         setFormData({
                             ...FormData,
@@ -106,9 +107,7 @@ const Login = () => {
     const check = localStorage.getItem('Login')
     return (
         check === "true" ?
-        //  <Redirect to="/dashboard" /> 
-        window.location.replace("/dashboard")
-
+         <Redirect to="/dashboard" /> 
          :
             <React.Fragment>
                 <div className="col-11 mx-auto pt-3 " >

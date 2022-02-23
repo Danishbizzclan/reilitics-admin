@@ -29,7 +29,6 @@ function Editor({ onChange, editorLoaded, name, value }) {
                     // }
                     onChange={(event, editor) => {
                         const data = editor.getData();
-                        // console.log({ event, editor, data })
                         onChange(data);
                         // plugins= [ EasyImage, Image, ... ]
                         // toolbar= [ 'uploadImage', ... ]

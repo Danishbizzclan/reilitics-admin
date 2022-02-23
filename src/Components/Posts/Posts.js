@@ -112,7 +112,6 @@ class Posts extends React.Component {
     }
 
    fetchData = async (page, value, keyword) => {
-        console.log(page)
         try {
             const res = await Promise.all([
                 value === "search"? axios.get(`article?keyword=${keyword}`):
@@ -147,11 +146,9 @@ class Posts extends React.Component {
         this.setState({ hasData });
     };
     onPageChange = page => {
-        console.log(page);
         this.setState({
             current: page,
         });
-        console.log(this.state.current, 'current page')
         this.fetchData(page)
     };
     render() {

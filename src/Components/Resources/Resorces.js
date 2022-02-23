@@ -58,7 +58,6 @@ const Resources = () => {
         // eslint-disable-next-line
     }, []);
 
-    console.log(data)
     const [selectedFile, setSelectedFile] = useState()
     const [podcastFile, setPodcastFile] = useState()
     const [documentFile, setDocumentFile] = useState()
@@ -89,7 +88,6 @@ const Resources = () => {
         // I've kept this example simple by using the first image instead of multiple
         setSelectedFile(e.target.files[0]) ?? setPodcastFile(e.target.files[0]) ?? setDocumentFile(e.target.files[0])
     }
-    console.log(selectedFile ?? podcastFile ?? documentFile)
 
     const SubmitResource = (resourceType) => {
         // let resourceTitle = (title && title) ?? (podcastTitle && podcastTitle) ?? (documentTitle && documentTitle);
@@ -113,8 +111,6 @@ const Resources = () => {
         formData.append("image", selectedFile);
         const link = `resource`
         axios.post(link, formData).then((res) => {
-            console.log(res)
-            console.log(res)
             if (res.data.success) {
                 message.success('Resource Added Successfully')
                 window.location = "/resources"
@@ -140,7 +136,6 @@ const Resources = () => {
             });
     }
 
-    console.log('pod', podcastTitle)
     return (
         <>
             <Sidebar />
@@ -153,7 +148,7 @@ const Resources = () => {
                         <input className="fillColor mx-2 py-2" placeholder="Add Book Title" name="title" value={title} onChange={onHandleChange} />
                         <input className="fillColor mx-2 py-2" placeholder="Add Book url" name="url" value={url} onChange={onHandleChange} />
                         <div className="mt-1">
-                            <label for="files" class="btn" style={{ backgroundColor: '#F2F8FF', border: '1px solid #0F74AF', color: 'black' }}>Upload Image</label>
+                            <label htmlFor="files" className="btn" style={{ backgroundColor: '#F2F8FF', border: '1px solid #0F74AF', color: 'black' }}>Upload Image</label>
                             <input type='file' id="files" onChange={onSelectFile} style={{ color: 'white', visibility: 'hidden', display:'none' }} />
                             <button className="btn btn-primary ml-2 px-2" style={{marginTop:'-0.5rem'}} onClick={() => SubmitResource("book")}>{load === true ?
                                 antIcon : "Publish"}</button>
@@ -173,7 +168,7 @@ const Resources = () => {
                                                 <div className="mx-2">
                                                     <div className="img-wrap">
                                                         <Popconfirm title="Sure to delete?" onConfirm={() => (DeleteResource(item._id))}>
-                                                            <span class="close">&times;</span>
+                                                            <span className="close">&times;</span>
                                                         </Popconfirm>
 
                                                         <img src={item.imageUrl} alt="imgg" className="px-2" height="170px" width="148px" ></img>
@@ -207,7 +202,7 @@ const Resources = () => {
                         <input className="fillColor mx-2 py-2" placeholder="Add Podcast Title" name="podcastTitle" value={podcastTitle} onChange={onHandleChange} />
                         <input className="fillColor mx-2 py-2" placeholder="Add Podcast url" name="podcastUrl" value={podcastUrl} onChange={onHandleChange} />
                         <div className="mt-1">
-                            <label for="files" class="btn" style={{ backgroundColor: '#F2F8FF', border: '1px solid #0F74AF', color: 'black' }}>Upload Image</label>
+                            <label htmlFor="files" className="btn" style={{ backgroundColor: '#F2F8FF', border: '1px solid #0F74AF', color: 'black' }}>Upload Image</label>
                             <input type='file' id="files" onChange={onSelectFile} style={{ color: 'white', visibility: 'hidden', display:'none' }} />
                             <button className="btn btn-primary ml-2 px-2" style={{marginTop:'-0.5rem'}} onClick={() => SubmitResource("podcast")}>{load === true ?
                                 antIcon : "Publish"}</button>
@@ -226,7 +221,7 @@ const Resources = () => {
                                                 <div className="mx-2">
                                                     <div className="img-wrap">
                                                         <Popconfirm title="Sure to delete?" onConfirm={() => (DeleteResource(item._id))}>
-                                                            <span class="close">&times;</span>
+                                                            <span className="close">&times;</span>
                                                         </Popconfirm>
                                                         <img src={item.imageUrl} alt="imgg" className="px-2" height="170px" width="148px" ></img>
                                                     </div>
@@ -257,7 +252,7 @@ const Resources = () => {
                         <input className="fillColor mx-2 py-2" placeholder="Add Document Title" name="documentTitle" value={documentTitle} onChange={onHandleChange} />
                         <input className="fillColor mx-2 py-2" placeholder="Add Document url" name="documentUrl" value={documentUrl} onChange={onHandleChange} />
                         <div className="mt-1">
-                            <label for="files" class="btn" style={{ backgroundColor: '#F2F8FF', border: '1px solid #0F74AF', color: 'black' }}>Upload Image</label>
+                            <label htmlFor="files" className="btn" style={{ backgroundColor: '#F2F8FF', border: '1px solid #0F74AF', color: 'black' }}>Upload Image</label>
                             <input type='file' id="files" onChange={onSelectFile} style={{ color: 'white', visibility: 'hidden', display:'none' }} />
                             <button className="btn btn-primary ml-2 px-2" style={{marginTop:'-0.5rem'}} onClick={() => SubmitResource("pdf")}>{load === true ?
                                 antIcon : "Publish"}</button>
@@ -276,7 +271,7 @@ const Resources = () => {
                                                 <div className="mx-2">
                                                     <div className="img-wrap">
                                                         <Popconfirm title="Sure to delete?" onConfirm={() => (DeleteResource(item._id))}>
-                                                            <span class="close">&times;</span>
+                                                            <span className="close">&times;</span>
                                                         </Popconfirm>
                                                         <img src={item.imageUrl} alt="imgg" className="px-2" height="170px" width="148px" ></img>
                                                     </div>

@@ -33,7 +33,7 @@ function UploadFile() {
             {selectedFile === undefined ?
                 <img src={avatar} alt='nothing' className='avatar mx-3' /> :
                 <img src={preview} alt='' className='avatar mx-3' />}
-                <label for="files" class="btn" style={{backgroundColor:'#F2F8FF', border:'1px solid #0F74AF', color:'black' }}>Upload Photo</label>
+                <label htmlFor="files" className="btn" style={{backgroundColor:'#F2F8FF', border:'1px solid #0F74AF', color:'black' }}>Upload Photo</label>
                 <input type='file' id="files" onChange={onSelectFile} style={{ color: 'white', visibility: 'hidden' }} />
         </div>
     )
