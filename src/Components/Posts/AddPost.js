@@ -24,7 +24,7 @@ const AddPost = () => {
         descriptionError: "",
         authorError: "",
         categoryError: "",
-        imageError:undefined,
+        imageError: undefined,
         loading: false,
         successMessage: null,
         errorMessage: null
@@ -94,7 +94,7 @@ const AddPost = () => {
                 metaTitle: "",
                 author: "",
                 category: "",
-                selectedFile:undefined
+                selectedFile: undefined
             })
         }
         return true;
@@ -113,16 +113,15 @@ const AddPost = () => {
                 loading: true
             })
             const link = "article"
-            axios.post(link,
-                {
-                    title: title,
-                    detail: data,
-                    metaTitle: metaTitle,
-                    metaDescription: metaDescription,
-                    imageFile: selectedFile.name,
-                    category: category,
-                    author: author
-                })
+            let formData = new FormData();
+            formData.append("detail", data);
+            formData.append("author", author);
+            formData.append("category", category);
+            formData.append("metaTitle", metaTitle);
+            formData.append("metaDescription", metaDescription);
+            formData.append("image", selectedFile);
+            // const link = `resource`
+            axios.post(link, formData)
                 .then((res) => {
                     if (res.data.success === true) {
                         // message.success('Post Added Successfully')
@@ -141,19 +140,62 @@ const AddPost = () => {
                         setSelectedFile(undefined)
                         window.location = "/post/add"
                     }
-                }).catch(function (error) {
-                    console.log(error);
+                })
+                // .then((res) => {
+                //     if (res.data.success) {
+                //         message.success('Resource Added Successfully')
+                //         window.location = "/resources"
+                //     }
+                // })
+                // .catch(function (error) {
+                //     console.log(error)
+                //     setDetailData({
+                //         ...DetailData,
+                //         load: false
+                //     })
+                // });
+                // axios.post(link,
+                //     {
+                //         title: title,
+                //         detail: data,
+                //         metaTitle: metaTitle,
+                //         metaDescription: metaDescription,
+                //         imageFile: selectedFile.name,
+                //         category: category,
+                //         author: author
+                //     })
+                // .then((res) => {
+                //     if (res.data.success === true) {
+                //         // message.success('Post Added Successfully')
+                //         setDetailData({
+                //             ...DetailData,
+                //             successMessage: "Post Added Successfully",
+                //             title: "",
+                //             data: "",
+                //             metaTitle: "",
+                //             metaDescription: "",
+                //             category: "",
+                //             author: "",
+                //             loading: false
+                //         })
+                //         setData("")
+                //         setSelectedFile(undefined)
+                //         window.location = "/post/add"
+                //     }
+                // })
+                .catch(function (error) {
+                    console.log(error.response);
                     setDetailData({
                         ...DetailData,
                         errorMessage: "Something is missing",
                         loading: false
                     })
                 });
-                setDetailData({
-                    ...DetailData,
-                    successMessage: null,
-                    errorMessage: null,
-                })
+            setDetailData({
+                ...DetailData,
+                successMessage: null,
+                errorMessage: null,
+            })
         }
     }
     // create a preview as a side effect, whenever selected file is changed

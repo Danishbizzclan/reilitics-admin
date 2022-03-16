@@ -2,6 +2,7 @@ import Sidebar from "../Sidebar";
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { message, Popconfirm, Tag } from "antd";
 
 const UserDetail = () => {
     const { _id } = useParams();
@@ -23,6 +24,8 @@ const UserDetail = () => {
         image: '',
         packageStatus: '',
         packageId: '',
+        renewDate: '',
+        price: '',
         country: '',
         countryError: '',
         password: '',
@@ -33,7 +36,7 @@ const UserDetail = () => {
 
     const [DetailData, setDetailData] = useState(initialstate);
     // eslint-disable-next-line
-    const { firstName, firstNameError, lastName, lastNameError, username, usernameError, email, emailError, image, date, dateError, phoneError, state, stateError, country, countryError, password, passwordError, role, roleError, packageId, packageStatus, phone } = DetailData;
+    const { firstName, firstNameError, lastName, lastNameError, username, renewDate, usernameError, email, emailError, image, date, price, dateError, phoneError, state, stateError, country, countryError, password, passwordError, role, roleError, packageId, packageStatus, phone } = DetailData;
 
 
     useEffect(() => {
@@ -45,7 +48,9 @@ const UserDetail = () => {
         try {
             const res = await Promise.all([
                 axios.get(`users/${_id}`),
+                // axios.get(`package/${packageId}`),
             ]);
+            // console.console(res[1].data.packageFound)
             setDetailData({
                 ...DetailData,
                 firstName: res[0].data.firstName,
@@ -57,7 +62,9 @@ const UserDetail = () => {
                 role: res[0].data.role,
                 image: res[0].data.image,
                 packageId: res[0].data.packageID,
-                packageStatus: res[0].data.packageStatus,
+                // packageStatus: res[1].data.packageFound.packageType,
+                // price: res[1].data.packageFound.price,
+                // renewDate: res[1].data.packageFound.updatedAt,
                 phone: res[0].data.phone,
                 load: true
             })
@@ -68,12 +75,25 @@ const UserDetail = () => {
             })
         }
     };
-
+    const DeleteUser = () => {
+        const link = "users/" + _id
+        axios.delete(link)
+            .then((res) => {
+                if (res.data.success) {
+                    message.success('User Deleted Successfully')
+                    window.location = "/users"
+                }
+            }).catch(function (error) {
+                console.log(error)
+            });
+    }
+    console.log('pkg', packageStatus)
     return (
         <>
             <Sidebar />
             <div className='content pt-5'>
                 <h6>User Detail</h6>
+                <h6 className="ml-3">Username: {username} </h6>
                 <div className='displayFlex mt-4'>
                     <div className='displayFlex ml-2'>
                         {/* <UploadFile /> */}
@@ -126,6 +146,27 @@ const UserDetail = () => {
                                 <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{phoneError}</span>
                                 <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{roleError}</span>
                             </div>
+                        </div>
+                    </div>
+                    <div className="ml-md-5">
+                        <h6 className=" font-weight-bold">Membership Details</h6>
+                        <h6 className="">Membership Package</h6>
+                        <div className='row col-md-6 col-12'>
+                            <h6 className="font-weight-bold mr-auto">Paid</h6>
+                            <h6 className="ml-auto font-weight-bold">USD 50</h6>
+                        </div>
+                        <div className='row col-md-6 col-12'>
+                            <h6 className=" mr-auto">Status</h6>
+                            <h6 className="ml-auto font-weight-bold"><Tag color="#71ECCF">Active</Tag></h6>
+                        </div>
+                        <div className='row col-md-6 col-12'>
+                            <h6 className=" mr-auto">Membership renew date</h6>
+                            <h6 className="ml-auto">25 Jan, 2022</h6>
+                        </div>
+                        <div className='row col-md-6 col-12 mt-2'>
+                            <button className="btn Radius8 White"> <Popconfirm title="Sure to delete?" onConfirm={() => (DeleteUser)}> Delete User</Popconfirm></button>
+                            <div className="mx-2" />
+                            <button className="btn Radius8 White">Terminate Access</button>
                         </div>
                     </div>
                 </div>

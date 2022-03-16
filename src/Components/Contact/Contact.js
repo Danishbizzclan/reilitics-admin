@@ -11,7 +11,7 @@ const columns = [
     {
         title: 'First Name',
         key: 'firstName',
-        sorter:(a, b) => a.firstName.localeCompare(b.firstName),
+        sorter: (a, b) => a.firstName.localeCompare(b.firstName),
         render: (record) => (
             <>
                 {record.firstName}
@@ -21,7 +21,7 @@ const columns = [
     {
         title: 'Last Name',
         key: 'lastName',
-        sorter:(a, b) => a.lastName.localeCompare(b.lastName),
+        sorter: (a, b) => a.lastName.localeCompare(b.lastName),
         render: (record) => (
             <>
                 {record.lastName}
@@ -31,12 +31,12 @@ const columns = [
     {
         title: 'Email',
         dataIndex: 'email',
-        sorter:(a, b) => a.email.localeCompare(b.email),
+        sorter: (a, b) => a.email.localeCompare(b.email),
     },
     {
         title: 'Date',
         key: 'createdAt',
-        sorter:(a, b) => a.createdAt.localeCompare(b.createdAt),
+        sorter: (a, b) => a.createdAt.localeCompare(b.createdAt),
         render: (record) => (
             <>
                 {dateFormat(record.createdAt, "yyyy/mm/dd, h:MM:ss tt")}
@@ -46,7 +46,7 @@ const columns = [
     {
         title: 'Subject',
         dataIndex: 'subject',
-        sorter:(a, b) => a.subject.localeCompare(b.subject),
+        sorter: (a, b) => a.subject.localeCompare(b.subject),
     },
     {
         title: 'Message',
@@ -109,6 +109,7 @@ class Contact extends React.Component {
             const res = await Promise.all([
                 axios.get("contacts"),
             ]);
+            console.table(res[0].data.contact)
             this.setState({
                 data: res[0].data.contact,
                 load: true
