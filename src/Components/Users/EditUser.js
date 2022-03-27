@@ -115,21 +115,21 @@ const EditUser = () => {
     const fetchData = async (value, keyword) => {
         try {
             const res = await Promise.all([
-                axios.get(`users/${_id}`),
+                axios.get(`users/profile/${_id}`),
             ]);
             setDetailData({
                 ...DetailData,
-                firstName: res[0].data.firstName,
-                lastName: res[0].data.lastName,
-                username: res[0].data.username,
-                email: res[0].data.email,
-                state: res[0].data.state,
-                country: res[0].data.country,
-                role: res[0].data.role,
-                image: res[0].data.image,
-                packageId: res[0].data.packageID,
-                packageStatus: res[0].data.packageStatus,
-                phone: res[0].data.phone,
+                firstName: res[0].data.user.firstName,
+                lastName: res[0].data.user.lastName,
+                username: res[0].data.user.username,
+                email: res[0].data.user.email,
+                state: res[0].data.user.state,
+                country: res[0].data.user.country,
+                role: res[0].data.user.role,
+                image: res[0].data.user.image,
+                packageId: res[0].data.user.packageID,
+                packageStatus: res[0].data.user.packageStatus,
+                phone: res[0].data.user.phone,
                 load: true
             })
         } catch {

@@ -38,7 +38,6 @@ const UserDetail = () => {
     // eslint-disable-next-line
     const { firstName, firstNameError, lastName, lastNameError, username, renewDate, usernameError, email, emailError, image, date, price, dateError, phoneError, state, stateError, country, countryError, password, passwordError, role, roleError, packageId, packageStatus, phone } = DetailData;
 
-
     useEffect(() => {
         fetchData();
         // eslint-disable-next-line
@@ -47,25 +46,25 @@ const UserDetail = () => {
     const fetchData = async (value, keyword) => {
         try {
             const res = await Promise.all([
-                axios.get(`users/${_id}`),
+                axios.get(`users/profile/${_id}`),
                 // axios.get(`package/${packageId}`),
             ]);
             // console.console(res[1].data.packageFound)
             setDetailData({
                 ...DetailData,
-                firstName: res[0].data.firstName,
-                lastName: res[0].data.lastName,
-                username: res[0].data.username,
-                email: res[0].data.email,
-                state: res[0].data.state,
-                country: res[0].data.country,
-                role: res[0].data.role,
-                image: res[0].data.image,
-                packageId: res[0].data.packageID,
-                // packageStatus: res[1].data.packageFound.packageType,
-                // price: res[1].data.packageFound.price,
-                // renewDate: res[1].data.packageFound.updatedAt,
-                phone: res[0].data.phone,
+                firstName: res[0].data.user.firstName,
+                lastName: res[0].data.user.lastName,
+                username: res[0].data.user.username,
+                email: res[0].data.user.email,
+                state: res[0].data.user.state,
+                country: res[0].data.user.country,
+                role: res[0].data.user.role,
+                image: res[0].data.user.image,
+                packageId: res[0].data.user.packageID,
+                // packageStatus: res[1].data.user.packageFound.packageType,
+                // price: res[1].data.user.packageFound.price,
+                // renewDate: res[1].data.user.packageFound.updatedAt,
+                phone: res[0].data.user.phone,
                 load: true
             })
         } catch {
@@ -149,7 +148,7 @@ const UserDetail = () => {
                         </div>
                     </div>
                     <div className="ml-md-5">
-                        <h6 className=" font-weight-bold">Membership Details</h6>
+                        {/* <h6 className=" font-weight-bold">Membership Details</h6>
                         <h6 className="">Membership Package</h6>
                         <div className='row col-md-6 col-12'>
                             <h6 className="font-weight-bold mr-auto">Paid</h6>
@@ -162,7 +161,7 @@ const UserDetail = () => {
                         <div className='row col-md-6 col-12'>
                             <h6 className=" mr-auto">Membership renew date</h6>
                             <h6 className="ml-auto">25 Jan, 2022</h6>
-                        </div>
+                        </div> */}
                         <div className='row col-md-6 col-12 mt-2'>
                             <button className="btn Radius8 White"> <Popconfirm title="Sure to delete?" onConfirm={() => (DeleteUser)}> Delete User</Popconfirm></button>
                             <div className="mx-2" />

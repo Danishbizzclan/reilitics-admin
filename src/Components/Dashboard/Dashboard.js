@@ -40,7 +40,7 @@ const Dashboard = () => {
             <div className="content pt-5">
                 <div className=''>
                     <div className='row mx-0'>
-                        <div className=' Light mx-0 mt-2'>
+                        <div className=' Light mx-1 mt-2'>
                             <h6 className='ml-3 mt-3'>Members</h6>
                             <div className='row mx-2 my-2'>
                                 <div className="card mx-2 mt-1" style={{ width: "200px", border: '1px solid #0F74AF', borderRadius: '4px' }}>
@@ -59,7 +59,7 @@ const Dashboard = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className=' Light mx-0 mt-2'>
+                        <div className=' Light mx-1 mt-2'>
                             <h6 className='ml-3 mt-3'>Members By Packages</h6>
                             <div className='row  mx-2 my-2'>
                                 <div className="card mx-2 mt-1" style={{ width: "200px", border: '1px solid #0F74AF', borderRadius: '4px' }}>

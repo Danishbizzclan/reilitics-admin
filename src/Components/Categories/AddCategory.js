@@ -230,7 +230,7 @@ class AddCategory extends React.Component {
                                 <button className='btn' onClick={() => this.fetchData("", "trashed")}>Trashed </button>
                             </div>
                             <div className='row mt-3'>
-                                <div className='mr-auto'>
+                                {/* <div className='mr-auto'>
                                     <div className='displayFlex  '>
                                         <select value={state.bulkActions} onChange={this.onHandleChange} name='bulkActions' className='blue Radius2 outline'>
                                             <option value="" className='blue'>Bulk Actions</option>
@@ -240,7 +240,7 @@ class AddCategory extends React.Component {
                                         </select>
                                         <Button className="bgBlue mx-2" size={'small'}> Apply </Button>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className='ml-auto'>
                                     <div className='displayFlex'>
                                         <input type="text" className='lightBlue border-0 outline' value={state.search} onChange={this.onHandleChange} name='search' placeholder='Search' />

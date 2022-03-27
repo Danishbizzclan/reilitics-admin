@@ -227,7 +227,7 @@ class Users extends React.Component {
                             <button className='btn' onClick={() => this.fetchData("", "cancelled")}>Cancelled Members </button>
                         </div>
 
-                        <div className='displayFlex mt-3'>
+                        {/* <div className='displayFlex mt-3'>
                             <div className='displayFlex'>
                                 <select value={state.bulkActions} onChange={this.onHandleChange} name='bulkActions' className='blue Radius2'>
                                     <option value="" className='blue'>Bulk Actions</option>
@@ -246,7 +246,7 @@ class Users extends React.Component {
                                     <option value="audi" className='blue'>Audi</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className='mt-3'>
                         <Table

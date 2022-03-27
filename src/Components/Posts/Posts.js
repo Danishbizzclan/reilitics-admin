@@ -36,16 +36,6 @@ const columns = [
             </>
         )
     },
-    // {
-    //     title: 'View Count',
-    //     dataIndex: 'count',
-    //     sorter: (a, b) => a.count - b.count,
-    // },
-    // {
-    //     title: 'Status',
-    //     dataIndex: 'status',
-    //     sorter: (a, b) => a.status - b.status,
-    // },
     {
         title: 'Action',
         key: 'action',
@@ -185,21 +175,7 @@ class Posts extends React.Component {
                                 <Button className="bgBlue mx-1" size={'small'} onClick={() => this.fetchData(this.state.current,"search", state.search)}> Search </Button>
                             </div>
                         </div>
-                        {/* <table className="table table-responsive-md mt-3">
-                            <tbody>
-                                <tr className=''>
-                                    <td className=' textCenter font_14'>All</td>
-                                    <td className='borderLeft textCenter font_14'>Published</td>
-                                    <td className='borderLeft textCenter font_14'>Draft</td>
-                                    <td className='borderLeft textCenter font_14'>Trashed</td>
-                                    <td className='borderLeft textCenter font_14'>Monthly Members</td>
-                                    <td className='borderLeft textCenter font_14'>24 hour Members</td>
-                                    <td className='borderLeft textCenter font_14'>New Members</td>
-                                    <td className='borderLeft textCenter font_14'>Cancelled Members</td>
-                                </tr>
-                            </tbody>
-                        </table> */}
-                        <div className='displayFlex mt-3'>
+                        {/* <div className='displayFlex mt-3'>
                             <div className='displayFlex'>
                                 <select value={state.bulkActions} onChange={this.onHandleChange} name='bulkActions' className='blue outline Radius2'>
                                     <option value="" className='blue'>Bulk Actions</option>
@@ -218,7 +194,7 @@ class Posts extends React.Component {
                                     <option value="audi" className='blue'>Audi</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className='mt-3'>
                         <Table

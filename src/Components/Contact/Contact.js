@@ -182,7 +182,7 @@ class Contact extends React.Component {
                             <button className='btn'>| </button>
                             <button className='btn' >Spam </button>
                         </div>
-                        <div className='displayFlex mt-3'>
+                        {/* <div className='displayFlex mt-3'>
                             <div className='displayFlex'>
                                 <select value={state.bulkActions} onChange={this.onHandleChange} name='bulkActions' className='blue outline Radius2'>
                                     <option value="" className='blue'>Bulk Actions</option>
@@ -201,7 +201,7 @@ class Contact extends React.Component {
                                     <option value="audi" className='blue'>Audi</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className='mt-3'>
                         <Table
