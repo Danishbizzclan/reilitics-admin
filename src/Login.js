@@ -3,7 +3,7 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { LoadingOutlined } from '@ant-design/icons';
-import {updateAuthorizationToken} from "../src/index";
+// import {updateAuthorizationToken} from "../src/index";
 const antIcon = <LoadingOutlined style={{ fontSize: 24, display: 'block' }} spin />;
 
 const Login = () => {
@@ -83,7 +83,7 @@ const Login = () => {
                     if (res.data.success===true) {
                         localStorage.clear();
                         localStorage.setItem('x-auth-token', res.data.token);
-                        updateAuthorizationToken(res.data.token);
+                        // updateAuthorizationToken(res.data.token);
                         localStorage.setItem('Login', true)
                         setFormData({
                             ...FormData,

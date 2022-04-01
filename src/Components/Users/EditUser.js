@@ -160,9 +160,9 @@ const EditUser = () => {
         if (!username) {
             usernameError = "Username is required";
         }
-        if (!date) {
-            dateError = "DOB is required";
-        }
+        // if (!date) {
+        //     dateError = "DOB is required";
+        // }
         if (!country) {
             countryError = "Country is required";
         }
@@ -180,11 +180,10 @@ const EditUser = () => {
         if (!email || reg.test(email) === false) {
             emailError = "Invalid Email";
         }
-        if (!password) {
-            passwordError = "Password is required";
-        }
-        if (passwordError || emailError || firstNameError || lastNameError || usernameError || emailError
-            || dateError || countryError || stateError || passwordError || phoneError || roleError) {
+        // if (!password) {
+        //     passwordError = "Password is required";
+        // }
+        if (emailError || firstNameError || lastNameError || usernameError || emailError || countryError || stateError || phoneError || roleError) {
             setDetailData({
                 ...DetailData,
                 firstNameError, lastNameError, usernameError, emailError, dateError, countryError, stateError, passwordError,

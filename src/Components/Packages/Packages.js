@@ -48,7 +48,7 @@ const columns = [
         render: (record) => (
             <>
                 <Space size="middle">
-                    <NavLink to={"/packages/edit/" + record._id}> <Button className=' bgBlue' size={'small'}> Edit </Button> </NavLink>
+                    {/* <NavLink to={"/packages/edit/" + record._id}> <Button className=' bgBlue' size={'small'}> Edit </Button> </NavLink> */}
                     <Popconfirm title="Sure to delete?" onConfirm={() => (DeletePackage(record._id))}>
                         <Button className='' size={'small'} type='primary' danger> <DeleteIcon /> </Button> </Popconfirm>
                     <NavLink to={"/packages/detail/" + record._id}> <Button className=' bgGreen' size={'small'} > <ViewIcon /> </Button></NavLink>

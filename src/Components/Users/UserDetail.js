@@ -2,7 +2,7 @@ import Sidebar from "../Sidebar";
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { message, Popconfirm, Tag } from "antd";
+import { message, Popconfirm } from "antd";
 
 const UserDetail = () => {
     const { _id } = useParams();
@@ -31,12 +31,13 @@ const UserDetail = () => {
         password: '',
         passwordError: '',
         role: '',
-        roleError: ''
+        roleError: '',
+        userStatus: ""
     }
 
     const [DetailData, setDetailData] = useState(initialstate);
     // eslint-disable-next-line
-    const { firstName, firstNameError, lastName, lastNameError, username, renewDate, usernameError, email, emailError, image, date, price, dateError, phoneError, state, stateError, country, countryError, password, passwordError, role, roleError, packageId, packageStatus, phone } = DetailData;
+    const { firstName, userStatus, firstNameError, lastName, lastNameError, username, renewDate, usernameError, email, emailError, image, date, price, dateError, phoneError, state, stateError, country, countryError, password, passwordError, role, roleError, packageId, packageStatus, phone } = DetailData;
 
     useEffect(() => {
         fetchData();
@@ -65,6 +66,7 @@ const UserDetail = () => {
                 // price: res[1].data.user.packageFound.price,
                 // renewDate: res[1].data.user.packageFound.updatedAt,
                 phone: res[0].data.user.phone,
+                userStatus: res[0].data.user.accountStatus,
                 load: true
             })
         } catch {
@@ -84,6 +86,30 @@ const UserDetail = () => {
                 }
             }).catch(function (error) {
                 console.log(error)
+            });
+    }
+    const TerminateAccess = (rejected) => {
+        console.log(rejected)
+        var axios = require('axios');
+        var FormData = require('form-data');
+        var data = new FormData();
+        data.append('accountStatus', rejected);
+
+        var config = {
+            method: 'put',
+            url: `users/${_id}`,
+            data: data
+        };
+
+        axios(config)
+            .then(function (response) {
+                if (response) {
+                    message.success('User Detail Updated Successfully')
+                    window.location = "/user/detail/" + _id
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
             });
     }
     console.log('pkg', packageStatus)
@@ -165,7 +191,12 @@ const UserDetail = () => {
                         <div className='row col-md-6 col-12 mt-2'>
                             <button className="btn Radius8 White"> <Popconfirm title="Sure to delete?" onConfirm={() => (DeleteUser)}> Delete User</Popconfirm></button>
                             <div className="mx-2" />
-                            <button className="btn Radius8 White">Terminate Access</button>
+                            {(userStatus === "approved") &&
+                                <button className="btn Radius8 White"><Popconfirm title="Sure to Terminate?" onConfirm={() => TerminateAccess("rejected")}> Terminate Access</Popconfirm></button>
+                            }
+                            {userStatus === "rejected" &&
+                                <button className="btn Radius8 White"><Popconfirm title="Sure to Activate?" onConfirm={() => TerminateAccess("approved")}> Activate Access</Popconfirm></button>
+                            }
                         </div>
                     </div>
                 </div>

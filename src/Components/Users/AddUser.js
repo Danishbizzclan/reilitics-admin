@@ -1,7 +1,7 @@
 import Sidebar from "../Sidebar";
 import { message } from 'antd';
 import React, { useEffect, useState } from 'react';
-
+import avatar from '../../assests/avatar.png'
 const AddUser = () => {
     const initialstate = {
         firstName: "",
@@ -186,7 +186,7 @@ const AddUser = () => {
                         {/* <UploadFile /> */}
                         <div>
                             {selectedFile === undefined ?
-                                <img src={image} alt='imagee' className='avatar mx-3' /> :
+                                <img src={avatar} alt='imagee' className='avatar mx-3' /> :
                                 <img src={preview} alt='' className='avatar mx-3' />}
                             <label htmlFor="files" className="btn" style={{ backgroundColor: '#F2F8FF', border: '1px solid #0F74AF', color: 'black' }}>Upload Photo</label>
                             <input type='file' id="files" onChange={onSelectFile} style={{ color: 'white', visibility: 'hidden' }} />

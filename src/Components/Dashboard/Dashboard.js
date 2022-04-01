@@ -10,7 +10,7 @@ import { ReactComponent as DollarIcon } from '../../assests/dollar.svg'
 const Dashboard = () => {
     const initialstate = {
         series: [{
-            data: [{ x: '05/06/2014', y: 54 }, { x: '05/08/2014', y: 17 }, { x: '05/28/2014', y: 26 }]
+            data: [{ x: '01/06/2022', y: 54 }, { x: '03/08/2022', y: 17 }, { x: '03/28/2022', y: 26 }]
         }],
         options: {
             chart: {
@@ -46,14 +46,14 @@ const Dashboard = () => {
                                 <div className="card mx-2 mt-1" style={{ width: "200px", border: '1px solid #0F74AF', borderRadius: '4px' }}>
                                     <div className="card-body">
                                         <h5 className="card-title text-center"> <NewUsersIcon /> </h5>
-                                        <h6 className="card-subtitle mt-2 text-center">25 Members</h6>
+                                        <h6 className="card-subtitle mt-2 text-center">24 Members</h6>
                                     </div>
                                     <h6 className="card-subtitle bgBlue text-center p-1 m-0 font_16">New Members</h6>
                                 </div>
                                 <div className="card mx-2 mt-1" style={{ width: "200px", border: '1px solid #48A7DF', borderRadius: '4px' }}>
                                     <div className="card-body">
                                         <h5 className="card-title text-center"> <CancelledIcon /> </h5>
-                                        <h6 className="card-subtitle mb-2 text-center">25 Members</h6>
+                                        <h6 className="card-subtitle mb-2 text-center">35 Members</h6>
                                     </div>
                                     <h6 className="card-subtitle text-center p-1 m-0 font_16" style={{ backgroundColor: '#48A7DF', color: 'white' }}>Cancelled Members</h6>
                                 </div>
@@ -65,14 +65,14 @@ const Dashboard = () => {
                                 <div className="card mx-2 mt-1" style={{ width: "200px", border: '1px solid #0F74AF', borderRadius: '4px' }}>
                                     <div className="card-body">
                                         <h5 className="card-title text-center"> <NewUsersIcon /> </h5>
-                                        <h6 className="card-subtitle mt-2 text-center">25 Members</h6>
+                                        <h6 className="card-subtitle mt-2 text-center">12 Members</h6>
                                     </div>
                                     <h6 className="card-subtitle bgBlue text-center p-1 m-0 font_16">Paid Monthly</h6>
                                 </div>
                                 <div className="card mx-2 mt-1" style={{ width: "200px", border: '1px solid #FFB100', borderRadius: '4px' }}>
                                     <div className="card-body">
                                         <h5 className="card-title text-center"> <FreeUsersIcon /> </h5>
-                                        <h6 className="card-subtitle mt-2 text-center">25 Members</h6>
+                                        <h6 className="card-subtitle mt-2 text-center">16 Members</h6>
                                     </div>
                                     <h6 className="card-subtitle text-center p-1 m-0 font_16" style={{ backgroundColor: '#FFB100', color: 'white' }}>Free</h6>
                                 </div>
