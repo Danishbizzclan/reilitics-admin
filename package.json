@@ -2,6 +2,7 @@
   "name": "adminpanel",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://reilitics-be.herokuapp.com",
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^31.1.0",
     "@ckeditor/ckeditor5-easy-image": "^31.1.0",
