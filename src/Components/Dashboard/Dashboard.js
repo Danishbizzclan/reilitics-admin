@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactApexChart from 'react-apexcharts';
 import Sidebar from '../Sidebar';
-import { ReactComponent as NewUsersIcon } from '../../assests/usersLight.svg'
-import { ReactComponent as CancelledIcon } from '../../assests/usersdark.svg'
-import { ReactComponent as FreeUsersIcon } from '../../assests/usersyellow.svg'
-import { ReactComponent as HoursIcon } from '../../assests/usersgreen.svg'
-import { ReactComponent as DollarIcon } from '../../assests/dollar.svg'
+import { ReactComponent as NewUsersIcon } from '../../assests/usersLight.svg';
+import { ReactComponent as CancelledIcon } from '../../assests/usersdark.svg';
+import { ReactComponent as FreeUsersIcon } from '../../assests/usersyellow.svg';
+import { ReactComponent as HoursIcon } from '../../assests/usersgreen.svg';
+import { ReactComponent as DollarIcon } from '../../assests/dollar.svg';
 
 const Dashboard = () => {
     const initialstate = {
@@ -34,6 +34,7 @@ const Dashboard = () => {
             },
         }
     }
+
     return (
         <>
             <Sidebar />
