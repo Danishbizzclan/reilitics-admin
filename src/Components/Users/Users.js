@@ -46,6 +46,7 @@ const columns = [
     },
     {
         title: 'Date Added',
+        sorter:true,
         render: (record) => (
             <>
                 {dateFormat(record.createdAt, "yyyy/mm/dd, h:MM:ss tt")}
@@ -121,7 +122,7 @@ class Users extends React.Component {
                     : value === "editors" ? axios.get("users/editors")
                         : value === "free" ? axios.get("package/free-members")
                             : value === "monthly" ? axios.get("package/monthly-members")
-                                : axios.get(`users?pageNumber=${page}`),
+                                : axios.get(`users?pageNumber=${page}`)
                 //         : value === "trashed" ? axios.get("category/status/trashed")
                 //             : value === "search" ? axios.get(`category?keyword=${keyword}`)
                 //                 : axios.get("category"),
@@ -142,14 +143,14 @@ class Users extends React.Component {
             })
             // this.onPageChange(page);
         } catch (error) {
-            console.log(error.response.data)
+            console.log(error?.response?.data)
             if (error.response.data.code === 401) {
-                this.setState({errorMessage:"Session Expired! Login Again"})
+                this.setState({ errorMessage: "Session Expired! Login Again" })
                 localStorage.clear()
-                window.location="/login"
+                window.location = "/login"
             }
-            else if (error.response.data.code !== 401){
-                this.setState({errorMessage:error.response.data.message})
+            else if (error.response.data.code !== 401) {
+                this.setState({ errorMessage: error.response.data.message })
             }
         };
     };
@@ -212,7 +213,7 @@ class Users extends React.Component {
                             </div>
                         </div>
                         <div className='row'>
-                            <button className='btn' onClick={() => this.fetchData()}>All ({this.state?.data?.length}) </button>
+                            <button className='btn' onClick={() => this.fetchData()}>All </button>
                             <button className='btn'>| </button>
                             <button className='btn' onClick={() => this.fetchData("", "admin")}>Admin </button>
                             <button className='btn'>| </button>

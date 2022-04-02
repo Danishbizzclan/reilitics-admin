@@ -295,6 +295,12 @@ div.content {
 tr:nth-child(even) {
   background-color: #F8FCFF !important;
 }
+.anticon.anticon-left svg{
+      margin-bottom: 0.4rem !important;
+}
+.anticon.anticon-right svg{
+  margin-bottom: 0.4rem !important;
+}
 /* .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused){
   min-height: 300px !important;
 } */

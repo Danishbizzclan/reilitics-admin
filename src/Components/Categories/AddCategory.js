@@ -221,7 +221,7 @@ class AddCategory extends React.Component {
                         </div>
                         <div className='col-md-7 mx-auto'>
                             <div className='row'>
-                                <button className='btn' onClick={() => this.fetchData()}>All ({this.state?.data?.length})</button>
+                                <button className='btn' onClick={() => this.fetchData()}>All </button>
                                 <button className='btn'>| </button>
                                 <button className='btn' onClick={() => this.fetchData("", "published")}>Published </button>
                                 <button className='btn'>| </button>

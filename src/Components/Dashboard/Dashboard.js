@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactApexChart from 'react-apexcharts';
 import Sidebar from '../Sidebar';
 import { ReactComponent as NewUsersIcon } from '../../assests/usersLight.svg';
@@ -6,8 +6,15 @@ import { ReactComponent as CancelledIcon } from '../../assests/usersdark.svg';
 import { ReactComponent as FreeUsersIcon } from '../../assests/usersyellow.svg';
 import { ReactComponent as HoursIcon } from '../../assests/usersgreen.svg';
 import { ReactComponent as DollarIcon } from '../../assests/dollar.svg';
+import axios from 'axios';
+import { LoadingOutlined } from '@ant-design/icons';
+
+const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const Dashboard = () => {
+    const [loading, setLoading] = React.useState(false);
+    const [free, setFree] = React.useState("");
+    const [full, setFull] = React.useState("");
     const initialstate = {
         series: [{
             data: [{ x: '01/06/2022', y: 54 }, { x: '03/08/2022', y: 17 }, { x: '03/28/2022', y: 26 }]
@@ -34,7 +41,34 @@ const Dashboard = () => {
             },
         }
     }
+    useEffect(() => {
+        fetchData();
+        // eslint-disable-next-line
+    }, []);
+    const fetchData = async (page, value) => {
+        setLoading(true);
+        try {
+            const res = await Promise.all([
+                axios.get(`package/free-members`),
+                axios.get(`package/24hour-members`),
 
+                //         : value === "trashed" ? axios.get("category/status/trashed")
+                //             : value === "search" ? axios.get(`category?keyword=${keyword}`)
+                //                 : axios.get("category"),
+            ]);
+            setFree(res[0]?.data?.users?.length);
+            setFull(res[1]?.data?.users?.length);
+            setLoading(false)
+            // this.onPageChange(page);
+        } catch (error) {
+            setLoading(true)
+            console.log(error.response.data)
+            if (error.response.data.code === 401) {
+                localStorage.clear()
+                window.location = "/login"
+            }
+        };
+    };
     return (
         <>
             <Sidebar />
@@ -73,14 +107,20 @@ const Dashboard = () => {
                                 <div className="card mx-2 mt-1" style={{ width: "200px", border: '1px solid #FFB100', borderRadius: '4px' }}>
                                     <div className="card-body">
                                         <h5 className="card-title text-center"> <FreeUsersIcon /> </h5>
-                                        <h6 className="card-subtitle mt-2 text-center">16 Members</h6>
+                                        <h6 className="card-subtitle mt-2 text-center">{
+                                            loading === true ?
+                                                antIcon :
+                                                free}</h6>
                                     </div>
                                     <h6 className="card-subtitle text-center p-1 m-0 font_16" style={{ backgroundColor: '#FFB100', color: 'white' }}>Free</h6>
                                 </div>
                                 <div className="card mx-2 mt-1" style={{ width: "200px", border: '1px solid #12BF7D', borderRadius: '4px' }}>
                                     <div className="card-body">
                                         <h5 className="card-title text-center"> <HoursIcon /> </h5>
-                                        <h6 className="card-subtitle mt-2 text-center">25 Members</h6>
+                                        <h6 className="card-subtitle mt-2 text-center">{
+                                            loading === true ?
+                                                antIcon :
+                                                full}</h6>
                                     </div>
                                     <h6 className="card-subtitle text-center p-1 m-0 font_16" style={{ backgroundColor: '#12BF7D', color: 'white' }}>24 Hours</h6>
                                 </div>
