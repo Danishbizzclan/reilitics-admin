@@ -55,25 +55,20 @@ const columns = [
     }
 ];
 
-const data = [];
-for (let i = 1; i <= 10; i++) {
-    data.push({
-        key: i,
-        _id: i,
-        title: 'How to transfer photos from iPhone to Mac?',
-        author: 'Tabish',
-        categories: `Categories`,
-        date: '2021/09/22 at 8:07 am	',
-        count: '2',
-        status: `Draft`,
-        description: `My name is John Brown, I am ${i}2 years old, living in New York No. ${i} Lake Park.`,
-    });
-}
-
 // const expandable = { expandedRowRender: record => <p>{record.description}</p> };
 const showHeader = true;
 const pagination = { position: 'bottom' };
 
+const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+    getCheckboxProps: (record) => ({
+        disabled: record.name === 'Disabled User',
+        // Column configuration not to be checked
+        name: record.name,
+    }),
+};
 class Contact extends React.Component {
     state = {
         bordered: false,
@@ -95,7 +90,8 @@ class Contact extends React.Component {
         data: [],
         load: false,
         isModalVisible: false,
-        errorMessage: null
+        errorMessage: null,
+        selectionType: 'checkbox'
     };
 
     onHandleChange = (event) => {
@@ -182,30 +178,33 @@ class Contact extends React.Component {
                             <button className='btn'>| </button>
                             <button className='btn' >Spam </button>
                         </div>
-                        {/* <div className='displayFlex mt-3'>
+                        <div className='displayFlex mt-3'>
                             <div className='displayFlex'>
-                                <select value={state.bulkActions} onChange={this.onHandleChange} name='bulkActions' className='blue outline Radius2'>
+                                <select value={state.bulkActions} onChange={this.onHandleChange} name='bulkActions' className='blue Radius2'>
                                     <option value="" className='blue'>Bulk Actions</option>
-                                    <option value="saab" className='blue'>Saab</option>
-                                    <option value="opel" className='blue'>Opel</option>
-                                    <option value="audi" className='blue'>Audi</option>
+                                    <option value="saab" className='blue'>Delete</option>
                                 </select>
                                 <Button className="bgBlue mx-2" size={'small'}> Apply </Button>
                             </div>
                             <div className='displayFlex'>
                                 <Button className="border-0 mx-2" size={'small'}> Filter </Button>
-                                <select value={state.filter} onChange={this.onHandleChange} name='filter' className='blue outline Radius2'>
+                                <select value={state.filter} onChange={this.onHandleChange} name='filter' className='blue Radius2'>
                                     <option value="" className='blue'>Select Period</option>
-                                    <option value="saab" className='blue'>Saab</option>
-                                    <option value="opel" className='blue'>Opel</option>
-                                    <option value="audi" className='blue'>Audi</option>
+                                    <option value="saab" className='blue'>1 Day</option>
+                                    <option value="opel" className='blue'>7 Days</option>
+                                    <option value="audi" className='blue'>30 Days</option>
                                 </select>
                             </div>
-                        </div> */}
+                        </div>
                     </div>
                     <div className='mt-3'>
                         <Table
                             {...this.state}
+                            rowKey="_id"
+                            rowSelection={{
+                                type: state.selectionType,
+                                ...rowSelection,
+                            }}
                             pagination={{ position: [this.state.top, this.state.bottom] }}
                             columns={tableColumns}
                             dataSource={state.hasData ? this.state.data : null}

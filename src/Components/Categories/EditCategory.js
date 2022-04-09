@@ -55,6 +55,17 @@ const DeleteCategory = (id) => {
 const showHeader = true;
 const pagination = { position: 'bottom' };
 
+const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+    getCheckboxProps: (record) => ({
+        disabled: record.name === 'Disabled User',
+        // Column configuration not to be checked
+        name: record.name,
+    }),
+};
+
 class EditCategory extends React.Component {
     formRef = React.createRef();
     state = {
@@ -78,9 +89,10 @@ class EditCategory extends React.Component {
         slug: '',
         data: [],
         current: 1,
-        totalPage:0,
+        totalPage: 0,
         id: '',
-        load: false
+        load: false,
+        selectionType: 'checkbox'
     };
 
     onHandleChange = (event) => {
@@ -200,17 +212,15 @@ class EditCategory extends React.Component {
                                 <button className='btn' onClick={() => this.fetchData("trashed")}>Trashed </button>
                             </div>
                             <div className='row mt-3'>
-                                {/* <div className='mr-auto'>
+                                <div className='mr-auto'>
                                     <div className='displayFlex  '>
                                         <select value={state.bulkActions} onChange={this.onHandleChange} name='bulkActions' className='blue Radius2 outline'>
                                             <option value="" className='blue'>Bulk Actions</option>
-                                            <option value="saab" className='blue'>Saab</option>
-                                            <option value="opel" className='blue'>Opel</option>
-                                            <option value="audi" className='blue'>Audi</option>
+                                            <option value="saab" className='blue'>Delete</option>
                                         </select>
                                         <Button className="bgBlue mx-2" size={'small'}> Apply </Button>
                                     </div>
-                                </div> */}
+                                </div>
                                 <div className='ml-auto'>
                                     <div className='displayFlex'>
                                         <input type="text" className='lightBlue border-0 outline' value={state.search} onChange={this.onHandleChange} name='search' placeholder='Search' />
@@ -222,6 +232,11 @@ class EditCategory extends React.Component {
                             <div className='mt-2'>
                                 <Table
                                     {...this.state}
+                                    rowKey="_id"
+                                    rowSelection={{
+                                        type: state.selectionType,
+                                        ...rowSelection,
+                                    }}
                                     pagination={{ pageSize: 10, defaultCurrent: this.state.current, onChange: this.onPageChange, total: this.state.totalPage * 10, showSizeChanger: false }}
                                     columns={tableColumns}
                                     dataSource={state.hasData ? this.state.data : null}

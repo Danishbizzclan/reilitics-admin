@@ -47,7 +47,6 @@ const columns = [
 const showHeader = true;
 const pagination = { position: 'bottom' };
 
-
 const DeletePage = (id) => {
     const link = "page/" + id
     axios.delete(link)

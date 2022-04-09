@@ -229,60 +229,60 @@ const EditUser = () => {
                 <div className=' mt-4'>
                     <div className='row col-12 ml-2'>
                         <div>
+                            <div className='row col-lg-8 col-12'>
+                                <input placeholder="First Name" name="firstName" value={firstName} onChange={onHandleChange} className="col-md-5 col-12 mx-auto fillColor px-md-5 my-1 px-1 py-2" />
 
-                            <div className='row '>
-                                <input placeholder="First Name" name="firstName" value={firstName} onChange={onHandleChange} className="col-md-5 col-12 mx-auto fillColor px-md-5 px-1 py-2" />
+                                <input placeholder="Last Name" name="lastName" value={lastName} onChange={onHandleChange} className="col-md-5 col-12 mx-auto fillColor px-md-5 px-1 my-1 py-2" />
 
-                                <input placeholder="Last Name" name="lastName" value={lastName} onChange={onHandleChange} className="col-md-5 col-12 mx-auto fillColor px-md-5 px-1 py-2" />
+                                {/* </div> */}
+                                {/* <div className='row '> */}
+                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-1">{firstNameError}</span>
+                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-1">{lastNameError}</span>
+                                {/* </div> */}
+                                {/* <div className='row'> */}
+                                <input placeholder="Username" name="username" value={username} onChange={onHandleChange} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2 my-1" />
+                                <input placeholder="Email" name="email" value={email} onChange={onHandleChange} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2 my-1" />
+                                {/* </div> */}
 
-                            </div>
-                            <div className='row '>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{firstNameError}</span>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{lastNameError}</span>
-                            </div>
-                            <div className='row'>
-                                <input placeholder="Username" name="username" value={username} onChange={onHandleChange} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2" />
-                                <input placeholder="Email" name="email" value={email} onChange={onHandleChange} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2" />
-                            </div>
+                                {/* <div className='row '> */}
+                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2 my-1">{usernameError}</span>
+                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2 my-1">{emailError}</span>
+                                {/* </div> */}
+                                {/* <div className='row'> */}
+                                <input type="date" onChange={onHandleChange} name="date" value={date} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2 my-1" />
+                                <input placeholder="State" name="state" value={state} onChange={onHandleChange} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2 my-1" />
+                                {/* </div> */}
+                                {/* <div className='row '> */}
+                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2 my-1">{dateError}</span>
+                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2 my-1">{stateError}</span>
+                                {/* </div> */}
+                                {/* <div className='row'> */}
+                                <input placeholder="Country" name="country" value={country} onChange={onHandleChange} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2 my-1" />
+                                <input type='password' name="password" value={password} onChange={onHandleChange} placeholder="Password" className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2 my-1" />
+                                {/* </div> */}
 
-                            <div className='row '>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{usernameError}</span>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{emailError}</span>
-                            </div>
-                            <div className='row'>
-                                <input type="date" onChange={onHandleChange} name="date" value={date} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2" />
-                                <input placeholder="State" name="state" value={state} onChange={onHandleChange} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2" />
-                            </div>
-                            <div className='row '>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{dateError}</span>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{stateError}</span>
-                            </div>
-                            <div className='row'>
-                                <input placeholder="Country" name="country" value={country} onChange={onHandleChange} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2" />
-                                <input type='password' name="password" value={password} onChange={onHandleChange} placeholder="Password" className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2" />
-                            </div>
-
-                            <div className='row '>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{countryError}</span>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{passwordError}</span>
-                            </div>
-                            <div className="row">
-                                <input placeholder="Phone" name="phone" type="number" value={phone} onChange={onHandleChange} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2" />
-                                <select onChange={onHandleChange} name="role" className="col-md-5 col-12 mt-2 fillColor px-md-5 mx-auto px-1 py-2">
+                                {/* <div className='row '> */}
+                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2 my-1">{countryError}</span>
+                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2 my-1">{passwordError}</span>
+                                {/* </div> */}
+                                {/* <div className="row"> */}
+                                <input placeholder="Phone" name="phone" type="number" value={phone} onChange={onHandleChange} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2 my-1" />
+                                <select onChange={onHandleChange} name="role" className="col-md-5 col-12 mt-2 fillColor px-md-5 mx-auto px-1 py-2 my-1">
                                     <option value={role ? role : ""} className='blue'>{role ? role : "Role"}</option>
                                     <option value="user" className='blue'>User</option>
                                     <option value="editor" className='blue'>Editor</option>
                                     <option value="admin" className='blue'>Admin</option>
                                 </select>
-                            </div>
+                                {/* </div> */}
 
-                            <div className='row '>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{phoneError}</span>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{roleError}</span>
+                                {/* <div className='row '> */}
+                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2 my-1">{phoneError}</span>
+                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2 my-1">{roleError}</span>
+
+                                <button onClick={SubmitUser} className="btn float-right Radius8 White py-2 my-1 px-3 mt-2">
+                                    Submit
+                                </button >
                             </div>
-                            <button onClick={SubmitUser} className="btn float-right Radius8 White py-2 px-3 mt-2">
-                                Submit
-                            </button >
                         </div>
                     </div>
                 </div>

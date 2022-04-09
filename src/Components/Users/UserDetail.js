@@ -130,36 +130,25 @@ const UserDetail = () => {
                     <div className='row col-12 ml-2'>
                         <div>
 
-                            <div className='row '>
-                                <input placeholder="First Name" readOnly name="firstName" value={firstName} className="col-md-5 col-12 mx-auto fillColor px-md-5 px-1 py-2" />
+                            <div className='row col-lg-8 col-12'>
+                                <input placeholder="First Name" readOnly name="firstName" value={firstName} className="col-md-5 col-12 mx-auto my-1 fillColor px-md-5 px-1 py-2" />
 
-                                <input placeholder="Last Name" readOnly name="lastName" value={lastName} className="col-md-5 col-12 mx-auto fillColor px-md-5 px-1 py-2" />
+                                <input placeholder="Last Name" readOnly name="lastName" value={lastName} className="col-md-5 col-12 mx-auto my-1 fillColor px-md-5 px-1 py-2" />
 
-                            </div>
-                            <div className='row '>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{firstNameError}</span>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{lastNameError}</span>
-                            </div>
-                            <div className='row'>
-                                <input placeholder="Username" readOnly name="username" value={username} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2" />
-                                <input placeholder="Email" readOnly name="email" value={email} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2" />
-                            </div>
+                            {/* </div>
+                            <div className='row'> */}
+                                <input placeholder="Username" readOnly name="username" value={username} className="col-md-5 col-12 mt-2 mx-auto my-1 fillColor px-md-5 px-1 py-2" />
+                                <input placeholder="Email" readOnly name="email" value={email} className="col-md-5 col-12 mt-2 mx-auto my-1 fillColor px-md-5 px-1 py-2" />
+                            {/* </div> */}
 
-                            <div className='row '>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{usernameError}</span>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{emailError}</span>
-                            </div>
-                            <div className='row'>
-                                <input placeholder="Country" readOnly name="country" value={country} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2" />
-                                <input placeholder="State" name="state" value={state} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2" />
-                            </div>
-                            <div className='row '>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{dateError}</span>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{stateError}</span>
-                            </div>
-                            <div className="row">
-                                <input placeholder="Phone" readOnly name="phone" type="number" value={phone} className="col-md-5 col-12 mt-2 mx-auto fillColor px-md-5 px-1 py-2" />
-                                <select disabled name="role" className="col-md-5 col-12 mt-2 fillColor px-md-5 mx-auto px-1 py-2">
+                            {/* <div className='row'> */}
+                                <input placeholder="Country" readOnly name="country" value={country} className="col-md-5 col-12 mt-2 mx-auto my-1 fillColor px-md-5 px-1 py-2" />
+                                <input placeholder="State" name="state" value={state} className="col-md-5 col-12 mt-2 mx-auto my-1 fillColor px-md-5 px-1 py-2" />
+                            {/* </div> */}
+                            
+                            {/* <div className="row"> */}
+                                <input placeholder="Phone" readOnly name="phone" type="number" value={phone} className="col-md-5 col-12 mt-2 mx-auto my-1 fillColor px-md-5 px-1 py-2" />
+                                <select disabled name="role" className="col-md-5 col-12 mt-2 fillColor px-md-5 mx-auto my-1 px-1 py-2">
                                     <option value={role ? role : ""} className='blue'>{role ? role : "Role"}</option>
                                     <option value="user" className='blue'>User</option>
                                     <option value="editor" className='blue'>Editor</option>
@@ -167,10 +156,6 @@ const UserDetail = () => {
                                 </select>
                             </div>
 
-                            <div className='row '>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{phoneError}</span>
-                                <span className="text-danger col-md-5 col-12 mt-2 mx-auto px-md-5 px-1 py-2">{roleError}</span>
-                            </div>
                         </div>
                     </div>
                     <div className="ml-md-5">

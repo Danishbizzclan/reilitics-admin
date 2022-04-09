@@ -17,9 +17,9 @@ const columns = [
         sorter: false,
         render: (record) => (
             <>
-               <span className='font-weight-bold'>
-                   {record.title}
-                   </span> 
+                <span className='font-weight-bold'>
+                    {record.title}
+                </span>
             </>
         )
     },
@@ -69,6 +69,16 @@ const DeletePost = (id) => {
 // const expandable = { expandedRowRender: record => <p>{record.description}</p> };
 const showHeader = true;
 const pagination = { position: 'bottom' };
+const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+    getCheckboxProps: (record) => ({
+        disabled: record.name === 'Disabled User',
+        // Column configuration not to be checked
+        name: record.name,
+    }),
+};
 
 class Posts extends React.Component {
     state = {
@@ -91,7 +101,8 @@ class Posts extends React.Component {
         data: [],
         errorMessage: null,
         current: 1,
-        totalPage: 0
+        totalPage: 0,
+        selectionType: 'checkbox'
     };
 
     onHandleChange = (event) => {
@@ -101,16 +112,16 @@ class Posts extends React.Component {
         })
     }
 
-   fetchData = async (page, value, keyword) => {
+    fetchData = async (page, value, keyword) => {
         try {
             const res = await Promise.all([
-                value === "search"? axios.get(`article?keyword=${keyword}`):
-                axios.get(`article?pageNumber=${page}`)
+                value === "search" ? axios.get(`article?keyword=${keyword}`) :
+                    axios.get(`article?pageNumber=${page}`)
             ]);
             this.setState({
                 load: true,
-                data: (value === "search"? res[0].data.articles:
-                res[0].data.articles),
+                data: (value === "search" ? res[0].data.articles :
+                    res[0].data.articles),
                 totalPage: res[0].data.pages,
             })
         } catch {
@@ -172,33 +183,36 @@ class Posts extends React.Component {
                             </div>
                             <div className='displayFlex'>
                                 <input type="text" className='lightBlue border-0 outline' value={state.search} onChange={this.onHandleChange} name='search' placeholder='Search' />
-                                <Button className="bgBlue mx-1" size={'small'} onClick={() => this.fetchData(this.state.current,"search", state.search)}> Search </Button>
+                                <Button className="bgBlue mx-1" size={'small'} onClick={() => this.fetchData(this.state.current, "search", state.search)}> Search </Button>
                             </div>
                         </div>
-                        {/* <div className='displayFlex mt-3'>
+                        <div className='displayFlex mt-3'>
                             <div className='displayFlex'>
-                                <select value={state.bulkActions} onChange={this.onHandleChange} name='bulkActions' className='blue outline Radius2'>
+                                <select value={state.bulkActions} onChange={this.onHandleChange} name='bulkActions' className='blue Radius2'>
                                     <option value="" className='blue'>Bulk Actions</option>
-                                    <option value="saab" className='blue'>Saab</option>
-                                    <option value="opel" className='blue'>Opel</option>
-                                    <option value="audi" className='blue'>Audi</option>
+                                    <option value="saab" className='blue'>Delete</option>
                                 </select>
                                 <Button className="bgBlue mx-2" size={'small'}> Apply </Button>
                             </div>
                             <div className='displayFlex'>
                                 <Button className="border-0 mx-2" size={'small'}> Filter </Button>
-                                <select value={state.filter} onChange={this.onHandleChange} name='filter' className='blue outline Radius2'>
+                                <select value={state.filter} onChange={this.onHandleChange} name='filter' className='blue Radius2'>
                                     <option value="" className='blue'>Select Period</option>
-                                    <option value="saab" className='blue'>Saab</option>
-                                    <option value="opel" className='blue'>Opel</option>
-                                    <option value="audi" className='blue'>Audi</option>
+                                    <option value="saab" className='blue'>1 Day</option>
+                                    <option value="opel" className='blue'>7 Days</option>
+                                    <option value="audi" className='blue'>30 Days</option>
                                 </select>
                             </div>
-                        </div> */}
+                        </div>
                     </div>
                     <div className='mt-3'>
                         <Table
                             {...this.state}
+                            rowKey="_id"
+                            rowSelection={{
+                                type: state.selectionType,
+                                ...rowSelection,
+                            }}
                             pagination={{ pageSize: 10, defaultCurrent: this.state.current, onChange: this.onPageChange, total: this.state.totalPage * 10, showSizeChanger: false }}
                             columns={tableColumns}
                             dataSource={state.hasData ? this.state.data : null}

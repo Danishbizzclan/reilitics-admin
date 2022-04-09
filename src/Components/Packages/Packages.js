@@ -83,7 +83,7 @@ class Packages extends React.Component {
         // expandable,
         title: undefined,
         showHeader,
-        rowSelection: {},
+        // rowSelection: {},
         scroll: undefined,
         hasData: true,
         tableLayout: undefined,
@@ -120,9 +120,9 @@ class Packages extends React.Component {
         this.fetchData();
     }
 
-    handleRowSelectionChange = enable => {
-        this.setState({ rowSelection: enable ? {} : undefined });
-    };
+    // handleRowSelectionChange = enable => {
+    //     this.setState({ rowSelection: enable ? {} : undefined });
+    // };
 
     handleYScrollChange = enable => {
         this.setState({ yScroll: enable });

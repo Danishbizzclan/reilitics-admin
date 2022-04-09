@@ -46,7 +46,7 @@ const columns = [
     },
     {
         title: 'Date Added',
-        sorter:true,
+        sorter: true,
         render: (record) => (
             <>
                 {dateFormat(record.createdAt, "yyyy/mm/dd, h:MM:ss tt")}
@@ -69,7 +69,6 @@ const columns = [
         ),
     },
 ];
-
 const DeleteUser = (id) => {
     const link = "users/" + id
     axios.delete(link)
@@ -85,7 +84,16 @@ const DeleteUser = (id) => {
 
 // const expandable = { expandedRowRender: record => <p>{record.description}</p> };
 const showHeader = true;
-
+const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+    getCheckboxProps: (record) => ({
+        disabled: record.name === 'Disabled User',
+        // Column configuration not to be checked
+        name: record.name,
+    }),
+};
 class Users extends React.Component {
     state = {
         bordered: false,
@@ -106,9 +114,10 @@ class Users extends React.Component {
         load: false,
         errorMessage: null,
         current: 1,
-        totalPage: 0
+        totalPage: 0,
+        selectedRowKeys: [], // Check here to configure the default column
+        selectionType: 'checkbox'
     };
-
     onHandleChange = (event) => {
         const { name, value } = event.target;
         this.setState({
@@ -158,10 +167,6 @@ class Users extends React.Component {
     componentDidMount() {
         this.fetchData(1);
     }
-
-    handleRowSelectionChange = enable => {
-        this.setState({ rowSelection: enable ? {} : undefined });
-    };
 
     handleYScrollChange = enable => {
         this.setState({ yScroll: enable });
@@ -228,13 +233,11 @@ class Users extends React.Component {
                             <button className='btn' onClick={() => this.fetchData("", "cancelled")}>Cancelled Members </button>
                         </div>
 
-                        {/* <div className='displayFlex mt-3'>
+                        <div className='displayFlex mt-3'>
                             <div className='displayFlex'>
                                 <select value={state.bulkActions} onChange={this.onHandleChange} name='bulkActions' className='blue Radius2'>
                                     <option value="" className='blue'>Bulk Actions</option>
-                                    <option value="saab" className='blue'>Saab</option>
-                                    <option value="opel" className='blue'>Opel</option>
-                                    <option value="audi" className='blue'>Audi</option>
+                                    <option value="saab" className='blue'>Delete</option>
                                 </select>
                                 <Button className="bgBlue mx-2" size={'small'}> Apply </Button>
                             </div>
@@ -242,12 +245,12 @@ class Users extends React.Component {
                                 <Button className="border-0 mx-2" size={'small'}> Filter </Button>
                                 <select value={state.filter} onChange={this.onHandleChange} name='filter' className='blue Radius2'>
                                     <option value="" className='blue'>Select Period</option>
-                                    <option value="saab" className='blue'>Saab</option>
-                                    <option value="opel" className='blue'>Opel</option>
-                                    <option value="audi" className='blue'>Audi</option>
+                                    <option value="saab" className='blue'>1 Day</option>
+                                    <option value="opel" className='blue'>7 Days</option>
+                                    <option value="audi" className='blue'>30 Days</option>
                                 </select>
                             </div>
-                        </div> */}
+                        </div>
                     </div>
                     <div className='mt-3'>
                         <Table
@@ -255,6 +258,11 @@ class Users extends React.Component {
                             pagination={{ pageSize: 10, current: this.state.current, onChange: this.onPageChange, total: this.state.totalPage * 10, showSizeChanger: false }}
                             columns={tableColumns}
                             dataSource={state.hasData ? this.state.data : null}
+                            rowKey="_id"
+                            rowSelection={{
+                                type: state.selectionType,
+                                ...rowSelection,
+                            }}
                             loading={{ indicator: <div><Spin indicator={antIcon} /></div>, spinning: !this.state.load }}
                             scroll={scroll} className="table-responsive"
                         />

@@ -15,6 +15,20 @@ const Dashboard = () => {
     const [loading, setLoading] = React.useState(false);
     const [free, setFree] = React.useState("");
     const [full, setFull] = React.useState("");
+
+    const state = {
+        filter: "",
+    }
+    const [FormData, setFormData] = React.useState(state);
+    const { filter } = FormData;
+    const onHandleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData({
+            ...FormData,
+            [name]: value
+        })
+    }
+
     const initialstate = {
         series: [{
             data: [{ x: '01/06/2022', y: 54 }, { x: '03/08/2022', y: 17 }, { x: '03/28/2022', y: 26 }]
@@ -137,6 +151,12 @@ const Dashboard = () => {
                                             <div className='mr-auto mx-auto'>
                                                 <h6 className="card-subtitle mt-2 text-center font-weight-bold">$2000</h6>
                                                 <h6 className="card-subtitle mt-2 text-center">Income Generated</h6>
+                                                <select value={filter} onChange={onHandleChange} name='filter' className='col-12 mt-2 border-0'>
+                                                    <option value="" className='blue'>Select Filter</option>
+                                                    <option value="saab" className='blue'>Last 1 Day</option>
+                                                    <option value="saab" className='blue'>Last 7 Days</option>
+                                                    <option value="saab" className='blue'>Last 30 Days</option>
+                                                </select>
                                             </div>
                                             <div className='ml-auto mx-auto'>
                                                 <h5 className="card-title "> <DollarIcon /> </h5>
