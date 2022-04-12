@@ -6,6 +6,7 @@ import { ReactComponent as CancelledIcon } from '../../assests/usersdark.svg';
 import { ReactComponent as FreeUsersIcon } from '../../assests/usersyellow.svg';
 import { ReactComponent as HoursIcon } from '../../assests/usersgreen.svg';
 import { ReactComponent as DollarIcon } from '../../assests/dollar.svg';
+import moment from 'moment';
 import axios from 'axios';
 import { LoadingOutlined } from '@ant-design/icons';
 
@@ -13,9 +14,15 @@ const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const Dashboard = () => {
     const [loading, setLoading] = React.useState(false);
-    const [free, setFree] = React.useState("");
-    const [full, setFull] = React.useState("");
-
+    // const [free, setFree] = React.useState("");
+    // const [full, setFull] = React.useState("");
+    const [income, setIncome] = React.useState("");
+    const [x, setX]= React.useState();
+    const [y, setY]= React.useState();
+    var today = moment().format("YYYY-MM-DD");
+    var day1 = moment().subtract(1, "days").format("YYYY-MM-DD");
+    var day7 = moment().subtract(7, "days").format("YYYY-MM-DD");
+    var day30 = moment().subtract(30, "days").format("YYYY-MM-DD");
     const state = {
         filter: "",
     }
@@ -23,12 +30,103 @@ const Dashboard = () => {
     const { filter } = FormData;
     const onHandleChange = (event) => {
         const { name, value } = event.target;
-        setFormData({
-            ...FormData,
-            [name]: value
-        })
+        // eslint-disable-next-line
+        if (name === "filter" && value == 1) {
+            setLoading(true)
+            const link = "income/byPeriod"
+            axios.post(link,
+                {
+                    startDate: day1,
+                    endDate: today
+                }).then((res) => {
+                    if (res.data.success === true) {
+                        setIncome(res?.data?.Data)
+                        setX(res?.data?.Data?.transactions?.map((item, index) => (item["updatedAt"])))
+                        setY(res?.data?.Data?.transactions?.map((item, index) => (item["income"])))
+                        setLoading(false)
+                    }
+                })
+        }
+        // eslint-disable-next-line
+        else if (name === "filter" && value == 7) {
+            setLoading(true)
+            const link = "income/byPeriod"
+            axios.post(link,
+                {
+                    startDate: day7,
+                    endDate: today
+                }).then((res) => {
+                    if (res.data.success === true) {
+                        setIncome(res?.data?.Data)
+                        setX(res?.data?.Data?.transactions?.map((item, index) => (item["updatedAt"])))
+                        setY(res?.data?.Data?.transactions?.map((item, index) => (item["income"])))
+                        setLoading(false)
+                    }
+                    console.log('res', res)
+                })
+        }
+        // eslint-disable-next-line
+        else if (name === "filter" && value == 30) {
+            setLoading(true)
+            const link = "income/byPeriod"
+            axios.post(link,
+                {
+                    startDate: day30,
+                    endDate: today
+                }).then((res) => {
+                    if (res.data.success === true) {
+                        setIncome(res?.data?.Data)
+                        setX(res?.data?.Data?.transactions?.map((item, index) => (item["updatedAt"])))
+                        setY(res?.data?.Data?.transactions?.map((item, index) => (item["income"])))
+                        setLoading(false)
+                    }
+                })
+        }
+        else {
+            setFormData({
+                ...FormData,
+                [name]: value
+            })
+        }
+
     }
 
+    useEffect(() => {
+        fetchData();
+        // eslint-disable-next-line
+    }, []);
+    const fetchData = async (page, value) => {
+        setLoading(true);
+        // debugger;
+        try {
+            const res = await Promise.all([
+                axios.get(`income`),
+                // axios.get(`package/free-members`),
+                // axios.get(`package/24hour-members`),
+
+                //         : value === "trashed" ? axios.get("category/status/trashed")
+                //             : value === "search" ? axios.get(`category?keyword=${keyword}`)
+                //                 : axios.get("category"),
+            ]);
+            console.log(res)
+            // setFree(res[1]?.data?.users?.length ?? 0);
+            // setFull(res[2]?.data?.users?.length?? 0);
+            setIncome(res[0]?.data?.Data)
+            setX(res?.data?.Data?.transactions?.map((item, index) => (item["updatedAt"])))
+            setY(res?.data?.Data?.transactions?.map((item, index) => (item["income"])))
+            setLoading(false)
+            // this.onPageChange(page);
+        } catch (error) {
+            setLoading(false)
+            console.log(error.response.data)
+            if (error.response.data.code === 401) {
+                localStorage.clear()
+                window.location = "/login"
+            }
+        };
+    };
+    console.log(x)
+    console.log(y)
     const initialstate = {
         series: [{
             data: [{ x: '01/06/2022', y: 54 }, { x: '03/08/2022', y: 17 }, { x: '03/28/2022', y: 26 }]
@@ -44,10 +142,10 @@ const Dashboard = () => {
             stroke: {
                 curve: 'smooth'
             },
-            xaxis: {
-                type: 'datetime',
-                categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-            },
+            // xaxis: {
+            //     type: 'datetime',
+            //     categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+            // },
             tooltip: {
                 x: {
                     format: 'dd/MM/yy HH:mm'
@@ -55,34 +153,6 @@ const Dashboard = () => {
             },
         }
     }
-    useEffect(() => {
-        fetchData();
-        // eslint-disable-next-line
-    }, []);
-    const fetchData = async (page, value) => {
-        setLoading(true);
-        try {
-            const res = await Promise.all([
-                axios.get(`package/free-members`),
-                axios.get(`package/24hour-members`),
-
-                //         : value === "trashed" ? axios.get("category/status/trashed")
-                //             : value === "search" ? axios.get(`category?keyword=${keyword}`)
-                //                 : axios.get("category"),
-            ]);
-            setFree(res[0]?.data?.users?.length);
-            setFull(res[1]?.data?.users?.length);
-            setLoading(false)
-            // this.onPageChange(page);
-        } catch (error) {
-            setLoading(true)
-            console.log(error.response.data)
-            if (error.response.data.code === 401) {
-                localStorage.clear()
-                window.location = "/login"
-            }
-        };
-    };
     return (
         <>
             <Sidebar />
@@ -124,7 +194,7 @@ const Dashboard = () => {
                                         <h6 className="card-subtitle mt-2 text-center">{
                                             loading === true ?
                                                 antIcon :
-                                                free}</h6>
+                                                23 + " Members"}</h6>
                                     </div>
                                     <h6 className="card-subtitle text-center p-1 m-0 font_16" style={{ backgroundColor: '#FFB100', color: 'white' }}>Free</h6>
                                 </div>
@@ -134,14 +204,14 @@ const Dashboard = () => {
                                         <h6 className="card-subtitle mt-2 text-center">{
                                             loading === true ?
                                                 antIcon :
-                                                full}</h6>
+                                                25 + " Members"}</h6>
                                     </div>
                                     <h6 className="card-subtitle text-center p-1 m-0 font_16" style={{ backgroundColor: '#12BF7D', color: 'white' }}>24 Hours</h6>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                    {console.log(income)}
                     <div className='row mx-0'>
                         <div className=' mx-0 mt-2'>
                             <div className='row mx-2 my-2'>
@@ -149,13 +219,17 @@ const Dashboard = () => {
                                     <div className="card-body">
                                         <div className='row'>
                                             <div className='mr-auto mx-auto'>
-                                                <h6 className="card-subtitle mt-2 text-center font-weight-bold">$2000</h6>
+                                                <h6 className="card-subtitle mt-2 text-center font-weight-bold">
+                                                    {
+                                                        loading === true ?
+                                                            antIcon :
+                                                            "$" + income?.total}</h6>
                                                 <h6 className="card-subtitle mt-2 text-center">Income Generated</h6>
-                                                <select value={filter} onChange={onHandleChange} name='filter' className='col-12 mt-2 border-0'>
-                                                    <option value="" className='blue'>Select Filter</option>
-                                                    <option value="saab" className='blue'>Last 1 Day</option>
-                                                    <option value="saab" className='blue'>Last 7 Days</option>
-                                                    <option value="saab" className='blue'>Last 30 Days</option>
+                                                <select onChange={onHandleChange} name='filter' className='blue Radius2'>
+                                                    <option value="" className='blue'>Select Period</option>
+                                                    <option value="1" className='blue'> 1 Day</option>
+                                                    <option value="7" className='blue'>7 Days</option>
+                                                    <option value="30" className='blue'>30 Days</option>
                                                 </select>
                                             </div>
                                             <div className='ml-auto mx-auto'>

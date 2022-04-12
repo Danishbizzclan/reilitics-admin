@@ -55,9 +55,13 @@ const DeleteCategory = (id) => {
 const showHeader = true;
 const pagination = { position: 'bottom' };
 
+var array;
 const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        if(selectedRowKeys?.length>0){
+            array=selectedRowKeys;
+        }
     },
     getCheckboxProps: (record) => ({
         disabled: record.name === 'Disabled User',
@@ -65,7 +69,22 @@ const rowSelection = {
         name: record.name,
     }),
 };
-
+const DeleteMultiple = () => {
+    console.log('id', array)
+    const link = "category/deleteBulk"
+    axios.post(link,{
+        deleteCategories:array
+    })
+        .then((res) => {
+            console.log('del',res)
+            if (res.data.success===true) {
+                message.success('Arcicles Deleted Successfully')
+                window.location = "/posts"
+            }
+        }).catch(function (error) {
+            console.log(error)
+        });
+}
 class EditCategory extends React.Component {
     formRef = React.createRef();
     state = {
@@ -218,7 +237,7 @@ class EditCategory extends React.Component {
                                             <option value="" className='blue'>Bulk Actions</option>
                                             <option value="saab" className='blue'>Delete</option>
                                         </select>
-                                        <Button className="bgBlue mx-2" size={'small'}> Apply </Button>
+                                        <Button className="bgBlue mx-2" size={'small'} onClick={DeleteMultiple}> Apply </Button>
                                     </div>
                                 </div>
                                 <div className='ml-auto'>

@@ -7,10 +7,10 @@ import { ReactComponent as ViewIcon } from '../../assests/eyefill.svg';
 import { NavLink } from 'react-router-dom';
 import dateFormat from "dateformat";
 import axios from 'axios';
+import moment from 'moment';
 import { LoadingOutlined } from '@ant-design/icons';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-
 const columns = [
     {
         title: 'Username',
@@ -81,12 +81,18 @@ const DeleteUser = (id) => {
             console.log(error)
         });
 }
-
+var array;
 // const expandable = { expandedRowRender: record => <p>{record.description}</p> };
 const showHeader = true;
 const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        // DeleteMultiple(selectedRowKeys)
+        if (selectedRowKeys?.length > 0) {
+            array = selectedRowKeys;
+        }
+        console.log('arr', array)
+
     },
     getCheckboxProps: (record) => ({
         disabled: record.name === 'Disabled User',
@@ -94,6 +100,23 @@ const rowSelection = {
         name: record.name,
     }),
 };
+
+const DeleteMultiple = () => {
+    console.log('id', array)
+    const link = "users/deleteBulk"
+    axios.post(link, {
+        deleteUsers: array
+    })
+        .then((res) => {
+            console.log('del', res)
+            if (res.data.success === true) {
+                message.success('User Deleted Successfully')
+                window.location = "/users"
+            }
+        }).catch(function (error) {
+            console.log(error)
+        });
+}
 class Users extends React.Component {
     state = {
         bordered: false,
@@ -116,13 +139,70 @@ class Users extends React.Component {
         current: 1,
         totalPage: 0,
         selectedRowKeys: [], // Check here to configure the default column
-        selectionType: 'checkbox'
+        selectionType: 'checkbox',
+        today: moment().format("YYYY-MM-DD"),
+        day1: moment().subtract(1, "days").format("YYYY-MM-DD"),
+        day7: moment().subtract(7, "days").format("YYYY-MM-DD"),
+        day30: moment().subtract(30, "days").format("YYYY-MM-DD"),
     };
     onHandleChange = (event) => {
         const { name, value } = event.target;
-        this.setState({
-            [name]: value
-        })
+        console.log(name, value)
+        // eslint-disable-next-line
+        if (name === "filter" && value == 1) {
+            this.setState({ load: true })
+            const link = "users/byPeriod"
+            axios.post(link,
+                {
+                    startDate: this.state.day1,
+                    endDate: this.state.today
+                }).then((res) => {
+                    if (res.data.success === true) {
+                        this.setState({
+                            data: res.data.Data,
+                        })
+                    }
+                })
+        }
+        // eslint-disable-next-line
+        else if (name === "filter" && value == 7) {
+            this.setState({ load: true })
+            const link = "users/byPeriod"
+            axios.post(link,
+                {
+                    startDate: this.state.day7,
+                    endDate: this.state.today
+                }).then((res) => {
+                    if (res.data.success === true) {
+                        this.setState({
+                            data: res.data.Data,
+                        })
+                    }
+                    console.log('res', res)
+                })
+        }
+        // eslint-disable-next-line
+        else if (name === "filter" && value == 30) {
+            this.setState({ load: true })
+            const link = "users/byPeriod"
+            axios.post(link,
+                {
+                    startDate: this.state.day30,
+                    endDate: this.state.today
+                }).then((res) => {
+                    if (res.data.success === true) {
+                        this.setState({
+                            data: res.data.Data
+                        })
+                    }
+                })
+        }
+        else {
+            this.setState({
+                [name]: value
+            })
+        }
+
     }
     fetchData = async (page, value) => {
         try {
@@ -132,9 +212,6 @@ class Users extends React.Component {
                         : value === "free" ? axios.get("package/free-members")
                             : value === "monthly" ? axios.get("package/monthly-members")
                                 : axios.get(`users?pageNumber=${page}`)
-                //         : value === "trashed" ? axios.get("category/status/trashed")
-                //             : value === "search" ? axios.get(`category?keyword=${keyword}`)
-                //                 : axios.get("category"),
             ]);
             this.setState({
                 // data: (value === "published" ? res[0].data.categoriesFound
@@ -239,17 +316,18 @@ class Users extends React.Component {
                                     <option value="" className='blue'>Bulk Actions</option>
                                     <option value="saab" className='blue'>Delete</option>
                                 </select>
-                                <Button className="bgBlue mx-2" size={'small'}> Apply </Button>
+                                <Button className="bgBlue mx-2" size={'small'} onClick={DeleteMultiple}> Apply </Button>
                             </div>
                             <div className='displayFlex'>
                                 <Button className="border-0 mx-2" size={'small'}> Filter </Button>
-                                <select value={state.filter} onChange={this.onHandleChange} name='filter' className='blue Radius2'>
+                                <select onChange={this.onHandleChange} name='filter' className='blue Radius2'>
                                     <option value="" className='blue'>Select Period</option>
-                                    <option value="saab" className='blue'>1 Day</option>
-                                    <option value="opel" className='blue'>7 Days</option>
-                                    <option value="audi" className='blue'>30 Days</option>
+                                    <option value="1" className='blue'> 1 Day</option>
+                                    <option value="7" className='blue'>7 Days</option>
+                                    <option value="30" className='blue'>30 Days</option>
                                 </select>
                             </div>
+                            {console.log(state.filter)}
                         </div>
                     </div>
                     <div className='mt-3'>
@@ -261,7 +339,7 @@ class Users extends React.Component {
                             rowKey="_id"
                             rowSelection={{
                                 type: state.selectionType,
-                                ...rowSelection,
+                                ...rowSelection
                             }}
                             loading={{ indicator: <div><Spin indicator={antIcon} /></div>, spinning: !this.state.load }}
                             scroll={scroll} className="table-responsive"

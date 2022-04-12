@@ -14,6 +14,7 @@ import AddPost from "./Components/Posts/AddPost";
 import EditPost from "./Components/Posts/EditPost";
 import Pages from "./Components/Pages/Pages";
 import EditPage from "./Components/Pages/EditPage";
+import ViewPage from "./Components/Pages/ViewPage";
 import AddCategory from "./Components/Categories/AddCategory";
 import EditCategory from "./Components/Categories/EditCategory";
 import Notifications from "./Components/PushNotifications/Notifications";
@@ -45,6 +46,7 @@ const App = () => {
           <Route exact path="/pages" component={Pages} />
           <Route exact path="/pages/add" component={AddPage} />
           <Route exact path="/page/edit/:_id" component={EditPage} />
+          <Route exact path="/page/view/:_id" component={ViewPage} />
           <Route exact path="/categories" component={AddCategory} />
           <Route exact path="/category/edit/:_id" component={EditCategory} />
           <Route exact path="/packages/add" component={AddPackage} />

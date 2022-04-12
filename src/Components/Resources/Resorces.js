@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../Sidebar";
 import { ReactComponent as Downloads } from '../../assests/download.svg'
 import { ReactComponent as Clicks } from '../../assests/clicks.svg'
+import pdf from '../../assests/pdf.png'
 import { LoadingOutlined } from '@ant-design/icons';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24, display: 'block' }} spin />;
@@ -108,7 +109,8 @@ const Resources = () => {
         let formData = new FormData();
         formData.append("title", resourceTitle);
         formData.append("resourceType", resourceType);
-        formData.append("image", selectedFile);
+        formData.append("resourceUrl", url);
+        formData.append("file", selectedFile);
         const link = `resource`
         axios.post(link, formData).then((res) => {
             if (res.data.success) {
@@ -149,8 +151,8 @@ const Resources = () => {
                         <input className="fillColor mx-2 py-2" placeholder="Add Book url" name="url" value={url} onChange={onHandleChange} />
                         <div className="mt-1">
                             <label htmlFor="files" className="btn" style={{ backgroundColor: '#F2F8FF', border: '1px solid #0F74AF', color: 'black' }}>Upload Image</label>
-                            <input type='file' id="files" onChange={onSelectFile} style={{ color: 'white', visibility: 'hidden', display:'none' }} />
-                            <button className="btn btn-primary ml-2 px-2" style={{marginTop:'-0.5rem'}} onClick={() => SubmitResource("book")}>{load === true ?
+                            <input type='file' id="files" onChange={onSelectFile} style={{ color: 'white', visibility: 'hidden', display: 'none' }} />
+                            <button className="btn btn-primary ml-2 px-2" style={{ marginTop: '-0.5rem' }} onClick={() => SubmitResource("book")}>{load === true ?
                                 antIcon : "Publish"}</button>
                         </div>
 
@@ -171,7 +173,7 @@ const Resources = () => {
                                                             <span className="close">&times;</span>
                                                         </Popconfirm>
 
-                                                        <img src={item.imageUrl} alt="imgg" className="px-2" height="170px" width="148px" ></img>
+                                                        <img src={item.fileUrl} alt="imgg" className="px-2" height="170px" width="148px" ></img>
                                                     </div>
                                                     <p className="text-center">{item.title}</p>
                                                     <div className="ml-3">
@@ -203,8 +205,8 @@ const Resources = () => {
                         <input className="fillColor mx-2 py-2" placeholder="Add Podcast url" name="podcastUrl" value={podcastUrl} onChange={onHandleChange} />
                         <div className="mt-1">
                             <label htmlFor="files" className="btn" style={{ backgroundColor: '#F2F8FF', border: '1px solid #0F74AF', color: 'black' }}>Upload Image</label>
-                            <input type='file' id="files" onChange={onSelectFile} style={{ color: 'white', visibility: 'hidden', display:'none' }} />
-                            <button className="btn btn-primary ml-2 px-2" style={{marginTop:'-0.5rem'}} onClick={() => SubmitResource("podcast")}>{load === true ?
+                            <input type='file' id="files" onChange={onSelectFile} style={{ color: 'white', visibility: 'hidden', display: 'none' }} />
+                            <button className="btn btn-primary ml-2 px-2" style={{ marginTop: '-0.5rem' }} onClick={() => SubmitResource("podcast")}>{load === true ?
                                 antIcon : "Publish"}</button>
                         </div>
 
@@ -223,7 +225,7 @@ const Resources = () => {
                                                         <Popconfirm title="Sure to delete?" onConfirm={() => (DeleteResource(item._id))}>
                                                             <span className="close">&times;</span>
                                                         </Popconfirm>
-                                                        <img src={item.imageUrl} alt="imgg" className="px-2" height="170px" width="148px" ></img>
+                                                        <img src={item.fileUrl} alt="imgg" className="px-2" height="170px" width="148px" ></img>
                                                     </div>
                                                     <p className="text-center">{item.title}</p>
                                                     <div className="ml-3">
@@ -253,8 +255,8 @@ const Resources = () => {
                         <input className="fillColor mx-2 py-2" placeholder="Add Document url" name="documentUrl" value={documentUrl} onChange={onHandleChange} />
                         <div className="mt-1">
                             <label htmlFor="files" className="btn" style={{ backgroundColor: '#F2F8FF', border: '1px solid #0F74AF', color: 'black' }}>Upload Image</label>
-                            <input type='file' id="files" onChange={onSelectFile} style={{ color: 'white', visibility: 'hidden', display:'none' }} />
-                            <button className="btn btn-primary ml-2 px-2" style={{marginTop:'-0.5rem'}} onClick={() => SubmitResource("pdf")}>{load === true ?
+                            <input type='file' id="files" onChange={onSelectFile} style={{ color: 'white', visibility: 'hidden', display: 'none' }} />
+                            <button className="btn btn-primary ml-2 px-2" style={{ marginTop: '-0.5rem' }} onClick={() => SubmitResource("pdf")}>{load === true ?
                                 antIcon : "Publish"}</button>
                         </div>
 
@@ -273,7 +275,7 @@ const Resources = () => {
                                                         <Popconfirm title="Sure to delete?" onConfirm={() => (DeleteResource(item._id))}>
                                                             <span className="close">&times;</span>
                                                         </Popconfirm>
-                                                        <img src={item.imageUrl} alt="imgg" className="px-2" height="170px" width="148px" ></img>
+                                                        <img src={pdf} alt="imgg" className="px-2" height="50%" width="148px" ></img>
                                                     </div>
                                                     <p className="text-center">{item.title}</p>
                                                     <div className="ml-3">

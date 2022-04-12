@@ -123,12 +123,12 @@ const Notifications = () => {
                             </div>
                         </div>
 
-                        <div className='mt-2'>
+                        {/* <div className='mt-2'>
                             <h6 className="font-weight-bold">Stripe Api</h6>
                             <div className="mx-2" />
                             <input type='text' name="apiKey" value={apiKey} onChange={onHandleChange} placeholder="Live Key" className=" fillColor col-12 px-md-5 px-1 py-2" />
 
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

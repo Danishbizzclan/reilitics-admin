@@ -36,7 +36,7 @@ const columns = [
                     <NavLink to={"/page/edit/" + record._id}> <Button className=' bgBlue' size={'small'}> Edit </Button> </NavLink>
                     <Popconfirm title="Sure to delete?" onConfirm={() => (DeletePage(record._id))}>
                         <Button className='' size={'small'} type='primary' danger> <DeleteIcon /> </Button> </Popconfirm>
-                    <NavLink to={"/post/detail/" + record._id}> <Button className=' bgGreen' size={'small'} > <ViewIcon /> </Button></NavLink>
+                    <NavLink to={"/page/view/" + record._id}> <Button className=' bgGreen' size={'small'} > <ViewIcon /> </Button></NavLink>
                 </Space>
             </>
         ),
