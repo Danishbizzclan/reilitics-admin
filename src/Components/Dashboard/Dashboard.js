@@ -17,8 +17,9 @@ const Dashboard = () => {
     // const [free, setFree] = React.useState("");
     // const [full, setFull] = React.useState("");
     const [income, setIncome] = React.useState("");
-    const [x, setX]= React.useState();
-    const [y, setY]= React.useState();
+    const [members, setMembers] = React.useState()
+    const [x, setX] = React.useState();
+    const [y, setY] = React.useState();
     var today = moment().format("YYYY-MM-DD");
     var day1 = moment().subtract(1, "days").format("YYYY-MM-DD");
     var day7 = moment().subtract(7, "days").format("YYYY-MM-DD");
@@ -101,6 +102,7 @@ const Dashboard = () => {
         try {
             const res = await Promise.all([
                 axios.get(`income`),
+                axios.get('users/count')
                 // axios.get(`package/free-members`),
                 // axios.get(`package/24hour-members`),
 
@@ -112,6 +114,7 @@ const Dashboard = () => {
             // setFree(res[1]?.data?.users?.length ?? 0);
             // setFull(res[2]?.data?.users?.length?? 0);
             setIncome(res[0]?.data?.Data)
+            setMembers(res[1]?.data?.Data)
             setX(res?.data?.Data?.transactions?.map((item, index) => (item["updatedAt"])))
             setY(res?.data?.Data?.transactions?.map((item, index) => (item["income"])))
             setLoading(false)
@@ -165,14 +168,18 @@ const Dashboard = () => {
                                 <div className="card mx-2 mt-1" style={{ width: "200px", border: '1px solid #0F74AF', borderRadius: '4px' }}>
                                     <div className="card-body">
                                         <h5 className="card-title text-center"> <NewUsersIcon /> </h5>
-                                        <h6 className="card-subtitle mt-2 text-center">24 Members</h6>
+                                        <h6 className="card-subtitle mt-2 text-center">{loading === true ?
+                                            antIcon :
+                                            members?.newMembers + " Members"}</h6>
                                     </div>
                                     <h6 className="card-subtitle bgBlue text-center p-1 m-0 font_16">New Members</h6>
                                 </div>
                                 <div className="card mx-2 mt-1" style={{ width: "200px", border: '1px solid #48A7DF', borderRadius: '4px' }}>
                                     <div className="card-body">
                                         <h5 className="card-title text-center"> <CancelledIcon /> </h5>
-                                        <h6 className="card-subtitle mb-2 text-center">35 Members</h6>
+                                        <h6 className="card-subtitle mb-2 text-center">{loading === true ?
+                                            antIcon :
+                                            members?.cancelMembers + " Members"}</h6>
                                     </div>
                                     <h6 className="card-subtitle text-center p-1 m-0 font_16" style={{ backgroundColor: '#48A7DF', color: 'white' }}>Cancelled Members</h6>
                                 </div>
@@ -184,7 +191,9 @@ const Dashboard = () => {
                                 <div className="card mx-2 mt-1" style={{ width: "200px", border: '1px solid #0F74AF', borderRadius: '4px' }}>
                                     <div className="card-body">
                                         <h5 className="card-title text-center"> <NewUsersIcon /> </h5>
-                                        <h6 className="card-subtitle mt-2 text-center">12 Members</h6>
+                                        <h6 className="card-subtitle mt-2 text-center">{loading === true ?
+                                            antIcon :
+                                            members?.monthly + " Members"}</h6>
                                     </div>
                                     <h6 className="card-subtitle bgBlue text-center p-1 m-0 font_16">Paid Monthly</h6>
                                 </div>
@@ -194,7 +203,7 @@ const Dashboard = () => {
                                         <h6 className="card-subtitle mt-2 text-center">{
                                             loading === true ?
                                                 antIcon :
-                                                23 + " Members"}</h6>
+                                                members?.free + " Members"}</h6>
                                     </div>
                                     <h6 className="card-subtitle text-center p-1 m-0 font_16" style={{ backgroundColor: '#FFB100', color: 'white' }}>Free</h6>
                                 </div>
@@ -204,9 +213,9 @@ const Dashboard = () => {
                                         <h6 className="card-subtitle mt-2 text-center">{
                                             loading === true ?
                                                 antIcon :
-                                                25 + " Members"}</h6>
+                                                members?.yearly + " Members"}</h6>
                                     </div>
-                                    <h6 className="card-subtitle text-center p-1 m-0 font_16" style={{ backgroundColor: '#12BF7D', color: 'white' }}>24 Hours</h6>
+                                    <h6 className="card-subtitle text-center p-1 m-0 font_16" style={{ backgroundColor: '#12BF7D', color: 'white' }}>Paid Yearly</h6>
                                 </div>
                             </div>
                         </div>

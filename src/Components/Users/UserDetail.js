@@ -130,25 +130,25 @@ const UserDetail = () => {
                     <div className='row col-12 ml-2'>
                         <div>
 
-                            <div className='row col-lg-8 col-12'>
-                                <input placeholder="First Name" readOnly name="firstName" value={firstName} className="col-md-5 col-12 mx-auto my-1 fillColor px-md-5 px-1 py-2" />
+                            <div className='row col-lg-8 col-12 px-0'>
+                                <input placeholder="First Name" readOnly name="firstName" value={firstName} className="col-md-5 col-12 mx-auto my-1 fillColor  px-2 py-2" />
 
-                                <input placeholder="Last Name" readOnly name="lastName" value={lastName} className="col-md-5 col-12 mx-auto my-1 fillColor px-md-5 px-1 py-2" />
+                                <input placeholder="Last Name" readOnly name="lastName" value={lastName} className="col-md-5 col-12 mx-auto my-1 fillColor  px-2 py-2" />
 
                             {/* </div>
                             <div className='row'> */}
-                                <input placeholder="Username" readOnly name="username" value={username} className="col-md-5 col-12 mt-2 mx-auto my-1 fillColor px-md-5 px-1 py-2" />
-                                <input placeholder="Email" readOnly name="email" value={email} className="col-md-5 col-12 mt-2 mx-auto my-1 fillColor px-md-5 px-1 py-2" />
+                                <input placeholder="Username" readOnly name="username" value={username} className="col-md-5 col-12 mt-2 mx-auto my-1 fillColor  px-2 py-2" />
+                                <input placeholder="Email" readOnly name="email" value={email} className="col-md-5 col-12 mt-2 mx-auto my-1 fillColor  px-2 py-2" />
                             {/* </div> */}
 
                             {/* <div className='row'> */}
-                                <input placeholder="Country" readOnly name="country" value={country} className="col-md-5 col-12 mt-2 mx-auto my-1 fillColor px-md-5 px-1 py-2" />
-                                <input placeholder="State" name="state" value={state} className="col-md-5 col-12 mt-2 mx-auto my-1 fillColor px-md-5 px-1 py-2" />
+                                <input placeholder="Country" readOnly name="country" value={country} className="col-md-5 col-12 mt-2 mx-auto my-1 fillColor  px-2 py-2" />
+                                <input placeholder="State" name="state" value={state} className="col-md-5 col-12 mt-2 mx-auto my-1 fillColor  px-2 py-2" />
                             {/* </div> */}
                             
                             {/* <div className="row"> */}
-                                <input placeholder="Phone" readOnly name="phone" type="number" value={phone} className="col-md-5 col-12 mt-2 mx-auto my-1 fillColor px-md-5 px-1 py-2" />
-                                <select disabled name="role" className="col-md-5 col-12 mt-2 fillColor px-md-5 mx-auto my-1 px-1 py-2">
+                                <input placeholder="Phone" readOnly name="phone" type="number" value={phone} className="col-md-5 col-12 mt-2 mx-auto my-1 fillColor  px-2 py-2" />
+                                <select disabled name="role" className="col-md-5 col-12 mt-2 fillColor  mx-auto my-1 px-2 py-2">
                                     <option value={role ? role : ""} className='blue'>{role ? role : "Role"}</option>
                                     <option value="user" className='blue'>User</option>
                                     <option value="editor" className='blue'>Editor</option>
@@ -173,7 +173,7 @@ const UserDetail = () => {
                             <h6 className=" mr-auto">Membership renew date</h6>
                             <h6 className="ml-auto">25 Jan, 2022</h6>
                         </div> */}
-                        <div className='row col-md-6 col-12 mt-2'>
+                        <div className='row col-md-6 col-12 mt-2 px-0'>
                             <button className="btn Radius8 White"> <Popconfirm title="Sure to delete?" onConfirm={() => (DeleteUser)}> Delete User</Popconfirm></button>
                             <div className="mx-2" />
                             {(userStatus === "approved") &&

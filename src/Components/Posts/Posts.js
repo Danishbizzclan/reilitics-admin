@@ -9,7 +9,30 @@ import axios from 'axios';
 import dateFormat from "dateformat";
 import moment from 'moment';
 import { LoadingOutlined } from '@ant-design/icons';
-
+import { DatePicker } from 'antd';
+import { Modal } from 'antd';
+const { RangePicker } = DatePicker;
+var customDate;
+function onChange(value, dateString) {
+    console.log('Selected Time: ', value);
+    console.log('Formatted Selected Time: ', dateString);
+    customDate = dateString;
+}
+function onOk(value) {
+    console.log('onOk: ', customDate);
+    const link = "article/byPeriod"
+    axios.post(link,
+        {
+            startDate: this.state.day1,
+            endDate: this.state.today
+        }).then((res) => {
+            if (res.data.success === true) {
+                this.setState({
+                    data: res.data.Data,
+                })
+            }
+        })
+}
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const columns = [
@@ -74,8 +97,8 @@ const pagination = { position: 'bottom' };
 const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        if(selectedRowKeys?.length>0){
-            array=selectedRowKeys;
+        if (selectedRowKeys?.length > 0) {
+            array = selectedRowKeys;
         }
     },
     getCheckboxProps: (record) => ({
@@ -88,12 +111,12 @@ const rowSelection = {
 const DeleteMultiple = () => {
     console.log('id', array)
     const link = "article/deleteBulk"
-    axios.post(link,{
-        deleteContacts:array
+    axios.post(link, {
+        deleteContacts: array
     })
         .then((res) => {
-            console.log('del',res)
-            if (res.data.success===true) {
+            console.log('del', res)
+            if (res.data.success === true) {
                 message.success('Arcicles Deleted Successfully')
                 window.location = "/posts"
             }
@@ -128,14 +151,43 @@ class Posts extends React.Component {
         day1: moment().subtract(1, "days").format("YYYY-MM-DD"),
         day7: moment().subtract(7, "days").format("YYYY-MM-DD"),
         day30: moment().subtract(30, "days").format("YYYY-MM-DD"),
+        isModalVisible: false
+    };
+    showModal = () => {
+        this.setState({ isModalVisible: true })
     };
 
-   
+    handleOk = () => {
+        this.setState({ isModalVisible: false })
+        console.log('okk', customDate)
+        const link = "article/byPeriod"
+        axios.post(link,
+            {
+                startDate: customDate[0],
+                endDate: customDate[1]
+            }).then((res) => {
+                if (res.data.success === true) {
+                    this.setState({
+                        data: res.data.Data,
+                    })
+                }
+            })
+    };
+
+    handleCancel = () => {
+        this.setState({ isModalVisible: false });
+    };
+
+
     onHandleChange = (event) => {
         const { name, value } = event.target;
         console.log(name, value)
+        if (name === "filter" && value == "modal") {
+            this.setState({ load: true, isModalVisible: true })
+
+        }
         // eslint-disable-next-line
-        if (name === "filter" && value == 1) {
+        else if (name === "filter" && value == 1) {
             this.setState({ load: true })
             const link = "article/byPeriod"
             axios.post(link,
@@ -280,7 +332,17 @@ class Posts extends React.Component {
                                     <option value="1" className='blue'> 1 Day</option>
                                     <option value="7" className='blue'>7 Days</option>
                                     <option value="30" className='blue'>30 Days</option>
+                                    <option className='blue' value="modal">
+                                        Custom </option>
                                 </select>
+                                <Modal title="Custom Filter" visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
+                                    <RangePicker
+                                        // showTime={{ format: 'HH:mm' }}
+                                        format="YYYY-MM-DD"
+                                        onChange={onChange}
+                                        onOk={onOk}
+                                    />
+                                </Modal>
                             </div>
                         </div>
                     </div>
