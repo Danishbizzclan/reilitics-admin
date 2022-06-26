@@ -53,7 +53,7 @@ const EditPost = () => {
                 detail: data,
                 metaTitle: metaTitle,
                 metaDescription: metaDescription,
-                imageFile: selectedFile.name,
+                imageFile: selectedFile?.name ?? "",
                 category: category,
                 author: author
             })
@@ -105,7 +105,8 @@ const EditPost = () => {
                 categories: res[1].data.categories,
                 title: res[0].data.article.title,
                 author:res[0].data.article.author,
-                // metaDescription: res[0].data.article.detail,
+                metaDescription: res[0].data.article.metaDescription,
+                metaTitle: res[0].data.article.metaTitle,
                 category:res[0].data.article.category,
                 selectedFile: res[0].data.article.image,
                 load: true

@@ -4,7 +4,8 @@ import './index.css';
 import App from './App';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://reilitics-be.herokuapp.com/api/';
+// axios.defaults.baseURL = 'https://reilitics-be.herokuapp.com/api/';
+axios.defaults.baseURL = 'http://3.129.149.98:5000/api/';
 // axios.defaults.headers =
 // {
 //   'Authorization': `Bearer ${localStorage.getItem('x-auth-token')}`,

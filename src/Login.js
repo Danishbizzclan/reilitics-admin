@@ -94,7 +94,7 @@ const Login = () => {
                     }
                 }).catch(function (error) {
                     console.log(error);
-                    message.error('Email or Password is invalid');
+                    message.error('Something Went Wrong. Please contact support system.');
                     // message.error(res.message)
                     setFormData({
                         ...FormData,
